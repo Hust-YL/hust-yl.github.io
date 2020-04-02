@@ -26,7 +26,7 @@
 <meta property="og:description" content="伪程序员,嵌入式学习者。" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://hust-yl.github.io/" />
-<meta property="og:updated_time" content="2020-02-05T12:25:50+08:00" />
+<meta property="og:updated_time" content="2020-01-20T19:10:50+08:00" />
 <meta itemprop="name" content="姚路的博客 | 伪程序员,嵌入式学习者">
 <meta itemprop="description" content="伪程序员,嵌入式学习者。"><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="姚路的博客 | 伪程序员,嵌入式学习者"/>
@@ -73,14 +73,10 @@
         
         
         <li>
-            <h2><a href="https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">项目经历（2）— 基于Unity的塔防游戏开发</a></h2>
-            <div class="post-meta">Aug 25, 2019</div>
+            <h2><a href="https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/">项目经历（1）— 基于Arduino的红外遥控器</a></h2>
+            <div class="post-meta">Oct 05, 2018</div>
             <div class="post-excerpt">
-                这个项目算是笔者第一次完成度较高且评价还行的项目了，在本篇中我将重点介绍实现的思路，舍弃Unity中的配置方式，而且由于Unity软件已过期，讲述可能会略显抽象，望诸位见谅。推荐一下当时学习的地方SIKI学院，里面有很多利用Unity开发的教程。
-1.目标 以Unity为基础，使用C#语言，开发出一款Windows版本单机3D塔防游戏。
-2.逻辑 作为塔防类游戏，他应当有良好的内部逻辑，即怪物生成、移动、击杀、塔的建造、拆毁、攻击、输赢判别；也不能缺少与用户的交互，选择哪一关、建造什么类型的塔、在哪建塔等等。 给出两个逻辑框图：3.代码 3.1 敌人代码 3.1.1移动 在Unity中，事先将起点、终点以及中间的所有拐点在地图上标出，作为一个GameObject的集合传入到敌人移动的脚本中，设置敌人的行动路线，总是朝着下一个目标点，当敌人与目标点的距离小于一定值时，更新目标点即集合的下一个值。移动中不断判断自身血量值，小于0时销毁自身，到达终点后销毁自身。在此脚本中，需要留有设置敌人移动速度、血量值、死亡效果等属性方便Unity设置。 为了敌人的移动好看，可以给模型添加一定的动作并设置为无限循环（笔者当时并没有深入研究Unity动作的时间控制，故采用了这样的方法）。
-transform.Translate((positions[index].position - transform.position).normalized * Time.deltaTime * speed,Space.World); /*此句用于控制敌人移动 *positions[index].position - transform.position 下一个位置至当前位置 *Time.deltaTime * speed 1S内的速度 *Space.World 按照世界坐标移动 */ transform.LookAt(positions[index].position);//更改敌人的朝向 GameObject.Destroy(this.gameObject);//销毁自身 GameObject effect = GameObject.Instantiate(explosionEffect, transform.position, transform.rotation); //在当前地点当前角度实例化explosionEffect 即销毁效果 3.1.2 生成 能够让敌人移动和销毁后当然就是让敌人生成了，生成的逻辑采用了简单的这一次生成的敌人都被销毁即数量为0时生成下一波，因此我们需要定义的属性为敌人模型、敌人数目、敌人波次（肯定不能只有一波敌人吧），既然一波中生成的不止一个敌人，那就需要我们定义生成速率。
-for (int i=0;i&lt;wave.count;i++) //遍历当前波次的每一个个体来生成  { GameObject.Instantiate(wave.enemyPrefab, START.position, Quaternion.identity); /*初始化游戏物体 *wave.enemyPrefab 在Unity中设置的敌人模型 *START.position 起始点 *Quaternion.identity 旋转四元素为默认（0,0,0,0）个人是这么理解的 */ CountEnemyAlive++; //当前场上存活敌人数+1  if (i != wave.count - 1) { yield return new WaitForSeconds(wave.
+                <p>简介：本项目基于Arduino UNO板和其他模块，用于实现遥控功能；文中重点介绍了实现思路，模块工作方式外加部分代码的讲解。</p>
             </div>
         </li>
         
@@ -88,8 +84,8 @@ for (int i=0;i&lt;wave.count;i++) //遍历当前波次的每一个个体来生�
     
     <div class="pagination">
         <a href="/" class="previous">PREV</a>
-        <span class="page_number ">2 of 3</span>
-        <a href="/page/3/" class="next">NEXT</a>
+        <span class="page_number ">2 of 2</span>
+        
     </div>
 </div>
             </div>
@@ -107,6 +103,14 @@ for (int i=0;i&lt;wave.count;i++) //遍历当前波次的每一个个体来生�
 <div class="col-box">
     <div class="col-box-title">Newest Posts</div>
     <ul class="post-list">
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-shell%E8%84%9A%E6%9C%AC/" class="post-link">学习笔记 — Shell脚本</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%9F%BA%E7%A1%80%E9%A2%84%E7%A7%91%E4%B8%80-%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%AD%A6linux/" class="post-link">学习笔记 — 嵌入式基础预科（一） — 零基础学linux</a>
+        </li>
         
         <li>
             <a href="https://hust-yl.github.io/post/3%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%89-%E5%9F%BA%E4%BA%8Etm4c-launchpad%E7%9A%84%E7%94%B5%E8%83%BD%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E4%BB%AA/" class="post-link">项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪</a>
