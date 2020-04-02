@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on 姚路的博客 | 伪程序员,嵌入式学习者</title>
+    <link>https://hust-yl.github.io/tags/</link>
+    <description>Recent content in Tags on 姚路的博客 | 伪程序员,嵌入式学习者</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 20 Jan 2020 19:10:50 +0800</lastBuildDate>
+    
+	<atom:link href="https://hust-yl.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Linux</title>
+      <link>https://hust-yl.github.io/tags/linux/</link>
+      <pubDate>Mon, 20 Jan 2020 19:10:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/tags/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>shell</title>
+      <link>https://hust-yl.github.io/tags/shell/</link>
+      <pubDate>Mon, 20 Jan 2020 19:10:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/tags/shell/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>嵌入式</title>
+      <link>https://hust-yl.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</link>
+      <pubDate>Wed, 15 Jan 2020 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/tags/%E5%B5%8C%E5%85%A5%E5%BC%8F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>C</title>
+      <link>https://hust-yl.github.io/tags/c/</link>
+      <pubDate>Thu, 05 Dec 2019 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/tags/c/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>LaunchPad</title>
+      <link>https://hust-yl.github.io/tags/launchpad/</link>
+      <pubDate>Thu, 05 Dec 2019 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/tags/launchpad/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tag-1</title>
+      <link>https://hust-yl.github.io/tags/tag-1/</link>
+      <pubDate>Thu, 05 Dec 2019 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/tags/tag-1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>C#</title>
+      <link>https://hust-yl.github.io/tags/c#/</link>
+      <pubDate>Sun, 25 Aug 2019 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/tags/c#/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unity</title>
+      <link>https://hust-yl.github.io/tags/unity/</link>
+      <pubDate>Sun, 25 Aug 2019 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/tags/unity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Arduino</title>
+      <link>https://hust-yl.github.io/tags/arduino/</link>
+      <pubDate>Fri, 05 Oct 2018 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/tags/arduino/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

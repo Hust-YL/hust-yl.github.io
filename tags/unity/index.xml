@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Unity on 姚路的博客 | 伪程序员,嵌入式学习者</title>
+    <link>https://hust-yl.github.io/tags/unity/</link>
+    <description>Recent content in Unity on 姚路的博客 | 伪程序员,嵌入式学习者</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 25 Aug 2019 12:25:50 +0800</lastBuildDate>
+    
+	<atom:link href="https://hust-yl.github.io/tags/unity/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>项目经历（2）— 基于Unity的塔防游戏开发</title>
+      <link>https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/</link>
+      <pubDate>Sun, 25 Aug 2019 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/</guid>
+      <description>&lt;p&gt;简介：本项目基于Unity 3D软件，使用语言为C#，目的为开发出一款单机塔防游戏；文中介绍了实现思路，以及在此思路下的逻辑代码编写并附上了最终的效果图。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

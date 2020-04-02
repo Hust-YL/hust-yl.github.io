@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>姚路的博客 | 伪程序员,嵌入式学习者</title>
+    <link>https://hust-yl.github.io/</link>
+    <description>Recent content on 姚路的博客 | 伪程序员,嵌入式学习者</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 20 Jan 2020 19:10:50 +0800</lastBuildDate>
+    
+	<atom:link href="https://hust-yl.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>学习笔记 — shell脚本</title>
+      <link>https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-shell%E8%84%9A%E6%9C%AC/</link>
+      <pubDate>Mon, 20 Jan 2020 19:10:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-shell%E8%84%9A%E6%9C%AC/</guid>
+      <description>&lt;p&gt;早就听说过脚本，但从来没有具体的学习过，趁着此次备考实习，初步学习了一下（&lt;a href=&#34;https://www.bilibili.com/video/BV1vE41127&#34;&gt;学习地址&lt;/a&gt;），（&lt;a href=&#34;http://book.ayitula.com/shelljiao-ben.html&#34;&gt;给的笔记&lt;/a&gt;）做一下总结：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>学习笔记 — 嵌入式基础预科（一） — 零基础学linux</title>
+      <link>https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%9F%BA%E7%A1%80%E9%A2%84%E7%A7%91%E4%B8%80-%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%AD%A6linux/</link>
+      <pubDate>Wed, 15 Jan 2020 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%9F%BA%E7%A1%80%E9%A2%84%E7%A7%91%E4%B8%80-%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%AD%A6linux/</guid>
+      <description>&lt;p&gt;根据自己意向，这个假期通过网课学习嵌入式的知识，网课：朱友鹏物联网大讲堂；本篇是嵌入式基础预科——零基础学linux的学习笔记：&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪</title>
+      <link>https://hust-yl.github.io/post/3%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%89-%E5%9F%BA%E4%BA%8Etm4c-launchpad%E7%9A%84%E7%94%B5%E8%83%BD%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E4%BB%AA/</link>
+      <pubDate>Thu, 05 Dec 2019 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/post/3%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%89-%E5%9F%BA%E4%BA%8Etm4c-launchpad%E7%9A%84%E7%94%B5%E8%83%BD%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E4%BB%AA/</guid>
+      <description>&lt;p&gt;简介：本项目基于TM4C LaunchPad，工程软件为CCS，目的是实现外部电压电流的采集和计算，最终显示并发送；文中重点分析了如何实现要求并对ADC采样函数做了深入的分析。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>项目经历（2）— 基于Unity的塔防游戏开发</title>
+      <link>https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/</link>
+      <pubDate>Sun, 25 Aug 2019 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/</guid>
+      <description>&lt;p&gt;简介：本项目基于Unity 3D软件，使用语言为C#，目的为开发出一款单机塔防游戏；文中介绍了实现思路，以及在此思路下的逻辑代码编写并附上了最终的效果图。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>项目经历（1）— 基于Arduino的红外遥控器</title>
+      <link>https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/</link>
+      <pubDate>Fri, 05 Oct 2018 12:25:50 +0800</pubDate>
+      
+      <guid>https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/</guid>
+      <description>&lt;p&gt;简介：本项目基于Arduino UNO板和其他模块，用于实现遥控功能；文中重点介绍了实现思路，模块工作方式外加部分代码的讲解。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

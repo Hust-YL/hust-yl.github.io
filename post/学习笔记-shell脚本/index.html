@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>学习笔记 — shell脚本 - 姚路的博客 | 伪程序员,嵌入式学习者</title>
+
+<meta name="description" content="早就听说过脚本，但从来没有具体的学习过，趁着此次备考实习，初步学习了一下（学习地址），（给的笔记）做一下总结：
+" /><meta name="keywords"
+  content="姚路, 2233, 嵌入式, 软硬结合" />
+
+
+<link rel="stylesheet" href="https://hust-yl.github.io/css/main.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/src/css/lightgallery.css">
+
+
+
+<meta property="og:title" content="学习笔记 — shell脚本" />
+<meta property="og:description" content="早就听说过脚本，但从来没有具体的学习过，趁着此次备考实习，初步学习了一下（学习地址），（给的笔记）做一下总结：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-shell%E8%84%9A%E6%9C%AC/" />
+<meta property="article:published_time" content="2020-01-20T19:10:50+08:00" />
+<meta property="article:modified_time" content="2020-01-20T19:10:50+08:00" />
+<meta itemprop="name" content="学习笔记 — shell脚本">
+<meta itemprop="description" content="早就听说过脚本，但从来没有具体的学习过，趁着此次备考实习，初步学习了一下（学习地址），（给的笔记）做一下总结：">
+<meta itemprop="datePublished" content="2020-01-20T19:10:50&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-20T19:10:50&#43;08:00" />
+<meta itemprop="wordCount" content="1005">
+
+
+
+<meta itemprop="keywords" content="shell,Linux," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="学习笔记 — shell脚本"/>
+<meta name="twitter:description" content="早就听说过脚本，但从来没有具体的学习过，趁着此次备考实习，初步学习了一下（学习地址），（给的笔记）做一下总结："/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+    <div class="header-placeholder"></div>
+    
+    <header class="header">
+        <div class="wrapper">
+    <div id="sidebar-toggle">TOC</div>
+    
+    <a class="site-title" href="https://hust-yl.github.io/">姚路</a>
+    
+    <nav class="site-nav">
+        <a class="page-link" href="/">Home</a><a class="page-link" href="/post/">Category</a><a class="page-link" href="http://github.com/Hust-YL">MyGit</a><a class="page-link" href="https://blog.csdn.net/baidu_40605776">CSDN</a>
+    </nav>
+</div>
+
+    </header>
+
+    
+    <div class="page-content">
+        <div class="wrapper">
+            
+            <div class="col-main">
+                <div class="post">
+    
+    <header class="post-header">
+        <h1 class="post-title">学习笔记 — Shell脚本</h1>
+        <p class="post-meta">Jan 20, 2020</p>
+    </header>
+    <article class="post-content">
+        
+        
+        
+        
+        
+        
+        <p>早就听说过脚本，但从来没有具体的学习过，趁着此次备考实习，初步学习了一下（<a href="https://www.bilibili.com/video/BV1vE41127">学习地址</a>），（<a href="http://book.ayitula.com/shelljiao-ben.html">给的笔记</a>）做一下总结：</p>
+<h1 id="一shell介绍">一、shell介绍</h1>
+<p><strong>目的：</strong> 让机器解决重复性问题。</p>
+<p><strong>什么是shell:</strong> 一个采用C语言编写的程序，是用户和linux内核沟通的桥梁。既是一种命令语言，又是一种解释性的编程语言。
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2Jvb2suYXlpdHVsYS5jb20vYXNzZXRzLyVFNyVCMyVCQiVFNyVCQiU5RiVFNSU4OCU4NiVFNSVCMSU4Mi5wbmc?x-oss-process=image/format,png#pic_center" alt="在这里插入图片描述"></p>
+<h1 id="二-shell语法">二、 shell语法</h1>
+<p><strong>如何写一个shell脚本：</strong> 将完成一个任务的所有的命令按照执行的先后顺序，自上而下写入到一个文本文件中，并给予执行权限。</p>
+<h3 id="21-规范">2.1 规范</h3>
+<p><strong>命名：</strong> 要有意义；虽然linux系统中，文件没有扩展名的概念，但建议用.sh结尾；名字不要太长，最好能在30个字节以内解决。</p>
+<p><strong>格式：</strong> 开头必须指定脚本运行环境 以 #！这个特殊符号组合来组成。如： #!/bin/bash 指定该脚本是运行解析由/bin/bash来完成的。</p>
+<p><strong>注释：</strong>  #</p>
+<pre><code>shell脚本中，最好加入脚本说明字段(分别说明运行环境、作者、时间以及作用)
+    #!
+    #Author: 
+    #Created Time: 
+    #Script Description: 
+</code></pre>
+<h3 id="22-运行">2.2 运行</h3>
+<pre><code>脚本运行需要执行权限
+#chmod u+x filename
+
+如果不赋予脚本执行权限，那么可以使用bash命令来运行未给予执行权限的脚本
+#bash filename
+</code></pre>
+<h3 id="23-特殊字符">2.3 特殊字符</h3>
+<table>
+<thead>
+<tr>
+<th align="center">字符</th>
+<th align="center">含义</th>
+<th align="center">举例/具体</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>~</code></td>
+<td align="center">家目录</td>
+<td align="center">#cd ~ 代表进入用户家目录</td>
+</tr>
+<tr>
+<td align="center"><code>!</code></td>
+<td align="center">执行历史命令</td>
+<td align="center">!! 执行上一条命令</td>
+</tr>
+<tr>
+<td align="center"><code>$</code></td>
+<td align="center">变量中取内容符</td>
+<td></td>
+</tr>
+<tr>
+<td align="center"><code>+ </code> <code>-</code> <code>*</code> <code>\</code> <code>%</code> |      对应数学运算  加 减 乘 除 取余数</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center"><code>&amp;</code></td>
+<td align="center">后台执行</td>
+<td></td>
+</tr>
+<tr>
+<td align="center"><code>*</code></td>
+<td align="center">通配符</td>
+<td align="center">匹配所有</td>
+</tr>
+<tr>
+<td align="center"><code>? </code></td>
+<td align="center">通配符</td>
+<td align="center">匹配除回车以外的一个字符</td>
+</tr>
+<tr>
+<td align="center"><code>;</code></td>
+<td align="center">命令之间用分号分割</td>
+<td></td>
+</tr>
+<tr>
+<td align="center"><code>|</code></td>
+<td align="center">管道符</td>
+<td align="center">上一个命令的输出作为下一个命令的输入   cat filename</td>
+</tr>
+<tr>
+<td align="center"><code>\</code>|               转义字符</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center"><code>``</code></td>
+<td align="center">反引号 命令中执行命令</td>
+<td align="center">echo &ldquo;today is <code>date +%F</code>&rdquo;</td>
+</tr>
+<tr>
+<td align="center"><code>' '</code></td>
+<td align="center">字符串单引号引起</td>
+<td align="center">不同于双引号的是，单引号不解释变量</td>
+</tr>
+<tr>
+<td align="center"><code>  &quot; &quot;</code></td>
+<td align="center">字符串双引号引起</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="24-特殊变量">2.4 特殊变量</h3>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">$*</td>
+<td align="center">代表所有参数，其间隔为IFS内定参数的第一个字元</td>
+</tr>
+<tr>
+<td align="center">$@</td>
+<td align="center">与*星号类同。不同之处在於不参照IFS</td>
+</tr>
+<tr>
+<td align="center">$#</td>
+<td align="center">代表参数数量</td>
+</tr>
+<tr>
+<td align="center">$</td>
+<td align="center">执行上一个指令的返回值</td>
+</tr>
+<tr>
+<td align="center">$-</td>
+<td align="center">最近执行的foreground pipeline的选项参数</td>
+</tr>
+<tr>
+<td align="center">$$</td>
+<td align="center">本身的Process ID</td>
+</tr>
+<tr>
+<td align="center">$</td>
+<td align="center">执行上一个背景指令的PID</td>
+</tr>
+<tr>
+<td align="center">$_</td>
+<td align="center">显示出最後一个执行的命令</td>
+</tr>
+<tr>
+<td align="center">$N</td>
+<td align="center">shell的第几个外传参数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="25-重定向">2.5 重定向</h3>
+<table>
+<thead>
+<tr>
+<th align="center">字符</th>
+<th align="center">含义</th>
+<th align="center">举例/具体</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">&gt;</td>
+<td align="center">重定向输入  覆盖原数据</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">&raquo;</td>
+<td align="center">重定向追加输入，在原数据的末尾添加</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">&lt;</td>
+<td align="center">重定向输出</td>
+<td align="center">wc -l &lt; /etc/passwd</td>
+</tr>
+<tr>
+<td align="center">&laquo;</td>
+<td align="center">重定向追加输出</td>
+<td align="center">fdisk /dev/sdb &laquo;EOF    &hellip;&hellip;&hellip;   EOF</td>
+</tr>
+</tbody>
+</table>
+<h3 id="26-数学运算">2.6 数学运算</h3>
+<pre><code>expr 命令：只能做整数运算，注意空格
+     [root@baism ~]# expr 1 + 1
+     2
+     [root@baism ~]# expr 5 - 2
+     3
+     [root@baism ~]# expr 5 \* 2    #出现应该转义，否则认为是通配符
+     10
+     [root@baism ~]# expr 5 / 2
+     2
+     [root@baism ~]# expr 5 % 2
+     1
+     
+使用bc计算器处理浮点运算,scale=2代表小数点保留两位
+     [root@baism ~]# echo &quot;scale=2;3+100&quot;|bc
+     103
+     [root@baism ~]# echo &quot;scale=2;100-3&quot;|bc
+     97
+     [root@baism ~]# echo &quot;scale=2;100/3&quot;|bc
+     33.33
+     [root@baism ~]# echo &quot;scale=2;100*3&quot;|bc
+     300
+
+双小圆括号运算，在shell中(( ))也可以用来做数学运算
+     [root@baism ~]# echo $(( 100+3))
+     103
+     [root@baism ~]# echo $(( 100-3)) 
+     97
+     [root@baism ~]# echo $(( 100%3))
+     1
+     [root@baism ~]# echo $(( 100*3))
+     300
+     [root@baism ~]# echo $(( 100/3))
+     33
+     [root@baism ~]# echo $(( 100**3))     #开方运算
+     1000000
+</code></pre>
+<h3 id="27-数学比较运算">2.7 数学比较运算</h3>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">-eq</td>
+<td align="center">等于</td>
+</tr>
+<tr>
+<td align="center">-gt</td>
+<td align="center">大于</td>
+</tr>
+<tr>
+<td align="center">-lt</td>
+<td align="center">小于</td>
+</tr>
+<tr>
+<td align="center">-ge</td>
+<td align="center">大于或等于</td>
+</tr>
+<tr>
+<td align="center">-le</td>
+<td align="center">小于或等于</td>
+</tr>
+<tr>
+<td align="center">-ne</td>
+<td align="center">不等于</td>
+</tr>
+</tbody>
+</table>
+<h3 id="28-字符串比较运算">2.8 字符串比较运算</h3>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">==</td>
+<td align="center">等于</td>
+</tr>
+<tr>
+<td align="center">!=</td>
+<td align="center">不等于</td>
+</tr>
+<tr>
+<td align="center">-n</td>
+<td align="center">检查字符串的长度是否大于0</td>
+</tr>
+<tr>
+<td align="center">-z</td>
+<td align="center">检查字符串的长度是否为0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="29-文件比较与检查">2.9 文件比较与检查</h3>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">-d</td>
+<td align="center">检查文件是否存在且为目录</td>
+</tr>
+<tr>
+<td align="center">-e</td>
+<td align="center">检查文件是否存在</td>
+</tr>
+<tr>
+<td align="center">-f</td>
+<td align="center">检查文件是否存在且为文件</td>
+</tr>
+<tr>
+<td align="center">-r</td>
+<td align="center">检查文件是否存在且可读</td>
+</tr>
+<tr>
+<td align="center">-s</td>
+<td align="center">检查文件是否存在且不为空</td>
+</tr>
+<tr>
+<td align="center">-w</td>
+<td align="center">检查文件是否存在且可写</td>
+</tr>
+<tr>
+<td align="center">-x</td>
+<td align="center">检查文件是否存在且可执行</td>
+</tr>
+<tr>
+<td align="center">-O</td>
+<td align="center">检查文件是否存在并且被当前用户拥有</td>
+</tr>
+<tr>
+<td align="center">-G</td>
+<td align="center">检查文件是否存在并且默认组为当前用户组</td>
+</tr>
+<tr>
+<td align="center">file1 -nt file2</td>
+<td align="center">检查file1是否比file2新</td>
+</tr>
+<tr>
+<td align="center">file1 -ot file2</td>
+<td align="center">检查file1是否比file2旧</td>
+</tr>
+</tbody>
+</table>
+<h3 id="210-逻辑运算">2.10 逻辑运算</h3>
+<table>
+<thead>
+<tr>
+<th align="center">符号</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">&amp;&amp;</td>
+<td align="center">与</td>
+</tr>
+<tr>
+<td align="center">||</td>
+<td align="center">或</td>
+</tr>
+<tr>
+<td align="center">！</td>
+<td align="center">非</td>
+</tr>
+</tbody>
+</table>
+<h3 id="211-退出">2.11 退出</h3>
+<pre><code>exit NUM 退出脚本，释放系统资源，NUM代表一个整数，代表返回值。      
+</code></pre>
+<h1 id="三-格式化输出">三、 格式化输出</h1>
+<h3 id="31-echo命令">3.1 echo命令</h3>
+<p><strong>功能：</strong> 将内容输出到默认显示设备（显示屏）
+<strong>语法：</strong>  echo [-ne][字符串]
+<strong>补充说明：</strong> echo会将输入的字符串送往标准输出。输出的字符串间以空白字符隔开,并在最后加上换行号。</p>
+<table>
+<thead>
+<tr>
+<th align="center">命令选项</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">-n</td>
+<td align="center">不要在最后自动换行</td>
+</tr>
+<tr>
+<td align="center">-e</td>
+<td align="center">若字符串中出现转义字符，则特别加以处理</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th align="center">转义字符</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">\a</td>
+<td align="center">发出警告声;</td>
+</tr>
+<tr>
+<td align="center">\b</td>
+<td align="center">删除前一个字符;</td>
+</tr>
+<tr>
+<td align="center">\c</td>
+<td align="center">最后不加上换行符号;</td>
+</tr>
+<tr>
+<td align="center">\f</td>
+<td align="center">换行但光标仍旧停留在原来的位置;</td>
+</tr>
+<tr>
+<td align="center">\n</td>
+<td align="center">换行且光标移至行首;</td>
+</tr>
+<tr>
+<td align="center">\r</td>
+<td align="center">光标移至行首，但不换行;</td>
+</tr>
+<tr>
+<td align="center">\t</td>
+<td align="center">插入tab;</td>
+</tr>
+<tr>
+<td align="center">\v</td>
+<td align="center">与\f相同;</td>
+</tr>
+<tr>
+<td align="center">\</td>
+<td align="center">插入\字符;</td>
+</tr>
+<tr>
+<td align="center">\nnn</td>
+<td align="center">插入nnn(八进制)所代表的ASCII字符;</td>
+</tr>
+<tr>
+<td align="center">–help</td>
+<td align="center">显示帮助–version显示版本信息</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-颜色">3.2 颜色</h3>
+<p>脚本中echo显示内容带颜色显示,echo显示带颜色，需要使用参数-e
+格式如下：
+<code>echo -e &quot;\033[字背景颜色；文字颜色m字符串\033[0m&quot;</code></p>
+<pre><code>字颜色：30—–37
+    echo -e “\033[30m 黑色字 \033[0m”
+    echo -e “\033[31m 红色字 \033[0m”
+    echo -e “\033[32m 绿色字 \033[0m”
+    echo -e “\033[33m 黄色字 \033[0m”
+  　echo -e “\033[34m 蓝色字 \033[0m”
+  　echo -e “\033[35m 紫色字 \033[0m”
+  　echo -e “\033[36m 天蓝字 \033[0m”
+  　echo -e “\033[37m 白色字 \033[0m”
+  　
+字背景颜色范围：40—–47
+    echo -e “\033[40;37m 黑底白字 \033[0m”
+    echo -e “\033[41;37m 红底白字 \033[0m”
+    echo -e “\033[42;37m 绿底白字 \033[0m”
+    echo -e “\033[43;37m 黄底白字 \033[0m”
+    echo -e “\033[44;37m 蓝底白字 \033[0m”
+    echo -e “\033[45;37m 紫底白字 \033[0m”
+    echo -e “\033[46;37m 天蓝底白字 \033[0m”
+    echo -e “\033[47;30m 白底黑字 \033[0m”
+最后面控制选项说明
+    \033[0m 关闭所有属性
+    \033[1m 设置高亮度
+    \033[4m 下划线
+    \033[5m 闪烁
+    \033[7m 反显
+    \033[8m 消隐
+设置前景色
+    \033[40m — \33[47m 设置背景色
+    \033[nA 光标上移n行
+    \033[nB 光标下移n行
+    \033[nC 光标右移n行
+    \033[nD 光标左移n行
+    \033[y;xH设置光标位置
+    \033[2J 清屏
+    \033[K 清除从光标到行尾的内容
+    \33[s 保存光标位置
+    \033[u 恢复光标位置
+    \033[?25l 隐藏光标
+    \033[?25h 显示光标
+</code></pre>
+<h1 id="四-输入">四、 输入</h1>
+<p>read命令
+默认接受键盘的输入，回车符代表输入结束
+| 命令选项 | 含义      |
+|:&mdash;&mdash;&ndash;:| :&mdash;&mdash;&mdash;&mdash;-:|
+-p|打印信息
+-t|限定时间
+-s|不回显
+-n|输入字符个数</p>
+<h1 id="五-变量">五、 变量</h1>
+<h3 id="51-分类">5.1 分类</h3>
+<p><strong>本地变量：</strong> 用户私有变量，只有本用户可以使用，保存在家目录下的<code>.bash_profile</code>、<code>.bashrc</code>文件中
+<strong>全局变量：</strong> 所有用户都可以使用，保存在<code>/etc/profile</code>、<code>/etc/bashrc</code>文件中
+<strong>用户自定义变量：</strong> 用户自定义，比如脚本中的变量</p>
+<h3 id="52-定义">5.2 定义</h3>
+<h5 id="521-自定义变量">5.2.1 自定义变量</h5>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="err">变量名</span><span class="o">=</span><span class="err">值</span>
+</code></pre></div><p><strong>在shell编程中的变量名和等号之间不能有空格。</strong></p>
+<pre><code>命名规则：
+    命名只能使用英文字母，数字和下划线，首个字符不能以数字开头。
+    中间不能有空格，可以使用下划线（_）。
+    不能使用标点符号。
+    不能使用bash里的关键字（可用help命令查看保留关键字）。
+    字符串要用单引号或双引号引起来
+</code></pre>
+<h5 id="522-全局变量">5.2.2 全局变量</h5>
+<p><code>export</code></p>
+<pre><code> 这种定义方式是一次性变量，系统重启就会丢失。
+ 如果本地变量或者全局变量需要永久使用，将变量写入变量文件中。
+</code></pre>
+<h5 id="523-永久变量">5.2.3 永久变量</h5>
+<p>见5.1中提到的文件，写入相应的文件。</p>
+<h3 id="53-读取">5.3 读取</h3>
+<p>读取变量内容符:<code>$</code>
+读取方法：$变量名</p>
+<h3 id="54-取消">5.4 取消</h3>
+<p><code>unset</code></p>
+<h1 id="六-数组">六、 数组</h1>
+<h3 id="61-定义">6.1 定义</h3>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">   <span class="err">数组名称</span><span class="o">=</span><span class="p">(</span><span class="err">元素</span><span class="mi">1</span> <span class="err">元素</span><span class="mi">2</span> <span class="err">元素</span><span class="mi">3</span> <span class="p">...)</span>
+</code></pre></div><h3 id="62-读出">6.2 读出</h3>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c">   <span class="err">$</span><span class="p">{</span><span class="err">数组名称</span><span class="p">[</span><span class="err">索引</span><span class="p">]}</span>
+   <span class="err">索引默认是元素在数组中的排队编号，默认第一个从</span><span class="mi">0</span><span class="err">开始</span>
+</code></pre></div><h3 id="63-赋值">6.3 赋值</h3>
+<p><strong>一次赋一个值：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="n">array0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">=</span><span class="err">&#39;</span><span class="n">tom</span><span class="err">&#39;</span>
+
+<span class="n">array0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="err">&#39;</span><span class="n">jarry</span><span class="err">&#39;</span>
+
+<span class="n">array0</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="err">&#39;</span><span class="n">natasha</span><span class="err">&#39;</span>
+</code></pre></div><p><strong>一次赋多个值：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="n">array2</span><span class="o">=</span><span class="p">(</span><span class="n">tom</span> <span class="n">jack</span> <span class="n">alice</span><span class="p">)</span>
+
+<span class="n">array3</span><span class="o">=</span><span class="p">(</span><span class="err">`</span><span class="n">cat</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span><span class="err">`</span><span class="p">)</span> <span class="err">希望是将该文件中的每一个行作为一个元素赋值给数组</span><span class="n">array3</span>
+
+<span class="n">array4</span><span class="o">=</span><span class="p">(</span><span class="err">`</span><span class="n">ls</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">ftp</span><span class="o">/</span><span class="n">Shell</span><span class="o">/</span><span class="k">for</span><span class="o">*</span><span class="err">`</span><span class="p">)</span>
+
+<span class="n">array5</span><span class="o">=</span><span class="p">(</span><span class="n">tom</span> <span class="n">jack</span> <span class="n">alice</span> <span class="s">&#34;bash shell&#34;</span><span class="p">)</span>
+</code></pre></div><h3 id="64-查看">6.4 查看</h3>
+<p><code>declare -a</code></p>
+<h3 id="65-访问">6.5 访问</h3>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">array1</span><span class="p">[</span><span class="mi">0</span><span class="p">]}</span> <span class="err">访问数组中的第一个元素</span>
+
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">array1</span><span class="p">[</span><span class="err">@</span><span class="p">]}</span> <span class="err">访问数组中所有元素</span> <span class="err">等同于</span> <span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">array1</span><span class="p">[</span><span class="o">*</span><span class="p">]}</span>
+
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="err">#</span><span class="n">array1</span><span class="p">[</span><span class="err">@</span><span class="p">]}</span> <span class="err">统计数组元素的个数</span>
+
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="o">!</span><span class="n">array2</span><span class="p">[</span><span class="err">@</span><span class="p">]}</span> <span class="err">获取数组元素的索引</span>
+
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">array1</span><span class="p">[</span><span class="err">@</span><span class="p">]</span><span class="o">:</span><span class="mi">1</span><span class="p">}</span> <span class="err">从数组下标</span><span class="mi">1</span><span class="err">开始</span>
+
+<span class="n">echo</span> <span class="err">$</span><span class="p">{</span><span class="n">array1</span><span class="p">[</span><span class="err">@</span><span class="p">]</span><span class="o">:</span><span class="mi">1</span><span class="o">:</span><span class="mi">2</span><span class="p">}</span> <span class="err">从数组下标</span><span class="mi">1</span><span class="err">开始，访问两个元素</span>
+</code></pre></div><h3 id="66-关联数组">6.6 关联数组</h3>
+<p>关联数组可以允许用户自定义数组的索引，方便、高效。</p>
+<h5 id="661-定义">6.6.1 定义</h5>
+<p>申明关联数组变量</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="n">declare</span> <span class="o">-</span><span class="n">A</span> <span class="n">ass_array1</span>
+
+<span class="n">declare</span> <span class="o">-</span><span class="n">A</span> <span class="n">ass_array2</span>
+</code></pre></div><h5 id="662-赋值">6.6.2 赋值</h5>
+<p><strong>一次赋一个值：</strong></p>
+<p>数组名[索引]=变量值</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="n">ass_array1</span><span class="p">[</span><span class="n">index1</span><span class="p">]</span><span class="o">=</span><span class="n">pear</span>
+
+<span class="n">ass_array1</span><span class="p">[</span><span class="n">index2</span><span class="p">]</span><span class="o">=</span><span class="n">apple</span>
+
+<span class="n">ass_array1</span><span class="p">[</span><span class="n">index3</span><span class="p">]</span><span class="o">=</span><span class="n">orange</span>
+
+<span class="n">ass_array1</span><span class="p">[</span><span class="n">index4</span><span class="p">]</span><span class="o">=</span><span class="n">peach</span>
+</code></pre></div><p><strong>一次赋多个值：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="n">ass_array2</span><span class="o">=</span><span class="p">([</span><span class="n">index1</span><span class="p">]</span><span class="o">=</span><span class="n">tom</span> <span class="p">[</span><span class="n">index2</span><span class="p">]</span><span class="o">=</span><span class="n">jack</span> <span class="p">[</span><span class="n">index3</span><span class="p">]</span><span class="o">=</span><span class="n">alice</span> <span class="p">[</span><span class="n">index4</span><span class="p">]</span><span class="o">=</span><span class="err">&#39;</span><span class="n">bash</span> <span class="n">shell</span><span class="err">&#39;</span><span class="p">)</span>
+</code></pre></div><h1 id="七-判断">七、 判断</h1>
+<h3 id="71-if语法">7.1 if语法</h3>
+<p><strong>单if语句</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">if</span> <span class="p">[</span> <span class="n">condition</span> <span class="p">]</span>           <span class="c">#condition 值为true or false</span>
+   <span class="n">then</span>
+      <span class="n">commands</span>
+<span class="n">fi</span>
+</code></pre></div><p><strong>if-then-else语句</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">if</span> <span class="p">[</span> <span class="n">condition</span> <span class="p">]</span>
+     <span class="n">then</span>
+          <span class="n">commands1</span>
+<span class="k">else</span>
+          <span class="n">commands2</span>
+<span class="n">fi</span>
+</code></pre></div><p><strong>if-then-elif语句</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">if</span> <span class="p">[</span> <span class="n">condition</span> <span class="n">1</span><span class="p">]</span>
+
+     <span class="n">then</span>
+
+            <span class="n">commands1</span>
+<span class="n">elif</span> <span class="p">[</span> <span class="n">condition</span> <span class="n">2</span><span class="p">]</span>
+
+     <span class="n">then</span>
+
+             <span class="n">commands2</span>
+
+  <span class="p">.......</span>
+<span class="k">else</span>
+
+            <span class="n">commandsX</span>
+<span class="n">fi</span>
+</code></pre></div><h3 id="72-if的高级应用">7.2 if的高级应用</h3>
+<ol>
+<li>条件符号使用双圆括号，可以在条件中植入数学表达式
+<strong>注意</strong> 双小圆括号中的比较运算符 使用的是我们传统的比较运算符 &raquo;= == &laquo;= !=</li>
+<li>使用双方括号,可以在条件中使用通配符</li>
+</ol>
+<h3 id="73-case语法">7.3 case语法</h3>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">case</span> <span class="n">变量</span>  <span class="k">in</span> 
+
+<span class="n">条件1</span><span class="err">）</span>
+           <span class="n">执行代码块1</span>
+<span class="p">;;</span>
+<span class="n">条件2</span><span class="err">）</span>
+           <span class="n">执行代码块2</span>
+<span class="p">;;</span>
+<span class="p">......</span>
+<span class="n">esac</span>
+</code></pre></div><p><strong>注意：</strong> 每个代码块执行完毕要以<code>;;</code>结尾代表结束，case结尾要以倒过来写的<code>esac</code>来结束。</p>
+<h1 id="八-循环">八、 循环</h1>
+<h3 id="81-for-语法">8.1 for 语法</h3>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">for</span> <span class="n">var</span> <span class="k">in</span> <span class="n">value1</span> <span class="n">value2</span> <span class="p">......</span>
+    <span class="k">do</span>
+        <span class="n">commands</span>
+<span class="n">done</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">for</span> <span class="p">((</span><span class="n">变量</span><span class="p">;</span><span class="n">条件</span><span class="p">;</span><span class="n">自增减运算</span>  <span class="p">))</span>   
+	<span class="k">do</span>          
+		<span class="n">代码块</span>
+<span class="n">done</span>
+</code></pre></div><h3 id="82-while-语法">8.2 while 语法</h3>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">while</span>  <span class="p">[</span> <span class="n">condition</span> <span class="p">]</span>      <span class="c">#条件为真while循环，条件为假停止循环</span>
+	<span class="k">do</span>
+		<span class="n">commands</span>
+<span class="n">done</span>
+</code></pre></div><h3 id="83-until-语法">8.3 until 语法</h3>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">until</span> <span class="p">[</span> <span class="n">condition</span> <span class="p">]</span>      <span class="c">#条件为假until循环，条件为真停止循环</span>
+	<span class="k">do</span>
+		<span class="n">commands代码块</span>
+<span class="n">done</span>
+</code></pre></div><h3 id="84-循环控制">8.4 循环控制</h3>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">sleep N</td>
+<td align="center">脚本执行到该步休眠N秒</td>
+</tr>
+<tr>
+<td align="center">continue</td>
+<td align="center">跳过循环中的某次循环</td>
+</tr>
+<tr>
+<td align="center">break</td>
+<td align="center">跳出循环继续执行后续代码</td>
+</tr>
+<tr>
+<td align="center">break N</td>
+<td align="center">跳出某个循环，从内循环到外循环依次编号为1-N</td>
+</tr>
+</tbody>
+</table>
+<h1 id="九-函数">九、 函数</h1>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">函数名</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="n">代码块</span>
+    <span class="k">return</span> <span class="n">N</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="k">function</span> <span class="n">函数名</span> <span class="p">{</span>
+      <span class="n">代码块</span>
+      <span class="k">return</span> <span class="n">N</span>
+ <span class="p">}</span>
+</code></pre></div><h1 id="十-正则表达式">十、 正则表达式</h1>
+<h3 id="101-介绍">10.1 介绍</h3>
+<p>正则表达式是一种文本模式匹配，包括普通字符（例如，a 到 z 之间的字母）和特殊字符（称为&quot;元字符&rdquo;）。它是一种字符串匹配的模式，可以用来检查一个字符串是否含有某种子串、将匹配的子串替换或者从某个字符串中取出某个条件的子串。</p>
+<p>正则表达式就像数学公式一样，我们可以通过正则表达式提供的一些特殊字符来生成一个匹配对应字符串的公式，用此来从海量数据中匹配出自己想要的数据。</p>
+<p>正则表达式是一个三方产品，被常用计算机语言广泛使用，比如：shell、PHP、python、java、js等。</p>
+<p>shell也支持正则表达式，但不是所有的命令都支持正则表达式，常见的的命令中只有grep、sed、awk命令支持正则表达式。</p>
+<h3 id="102-特殊字符">10.2 特殊字符</h3>
+<p><strong>定位符</strong>
+使用方式：</p>
+<ol>
+<li>同时锚定开头和结尾，做精确匹配；</li>
+<li>单一锚定开头和结尾，做模糊匹配。</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">定位符</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">^</td>
+<td align="center">锚定开头 ^a 以a开头 默认锚定一个字符</td>
+</tr>
+<tr>
+<td align="center">$</td>
+<td align="center">锚定结尾 a$ 以a结尾 默认锚定一个字符</td>
+</tr>
+<tr>
+<td align="center"><strong>匹配符</strong></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">使用方式：匹配字符串</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">匹配符</td>
+<td align="center">说明</td>
+</tr>
+<tr>
+<td align="center">:&mdash;&mdash;&ndash;:</td>
+<td align="center">:&mdash;&mdash;&mdash;&mdash;-:</td>
+</tr>
+<tr>
+<td align="center">.</td>
+<td align="center">匹配除回车以外的任意字符</td>
+</tr>
+<tr>
+<td align="center">( )</td>
+<td align="center">字符串分组</td>
+</tr>
+<tr>
+<td align="center">[ ]</td>
+<td align="center">定义字符类，匹配括号中的一个字符</td>
+</tr>
+<tr>
+<td align="center">[ ^ ]</td>
+<td align="center">表示否定括号中出现字符类中的字符,取反。</td>
+</tr>
+<tr>
+<td align="center">\</td>
+<td align="center">转义字符</td>
+</tr>
+<tr>
+<td align="center">|</td>
+<td align="center">或</td>
+</tr>
+<tr>
+<td align="center"><strong>限定符</strong></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">使用方式:对前面的字符或者字符串做限定说明</td>
+<td></td>
+</tr>
+<tr>
+<td align="center">限定符</td>
+<td align="center">说明</td>
+</tr>
+<tr>
+<td align="center">:&mdash;&mdash;&ndash;:</td>
+<td align="center">:&mdash;&mdash;&mdash;&mdash;-:</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>|某个字符之后加星号表示该字符不出现或出现多次
+？|	与星号相似，但略有变化，表示该字符出现一次或不出现</li>
+</ul>
+<ul>
+<li>|与星号相似，表示其前面字符出现一次或多次，但必须出现一次
+{n,m}	|某个字符之后出现，表示该字符最少n次，最多m次
+{m}	|正好出现了m次</li>
+</ul>
+<h3 id="103-posix特殊字符">10.3 POSIX特殊字符</h3>
+<table>
+<thead>
+<tr>
+<th align="center">特殊字符</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">[:alnum:]</td>
+<td align="center">匹配任意字母字符0-9 a-z A-Z</td>
+</tr>
+<tr>
+<td align="center">[:alpha:]</td>
+<td align="center">匹配任意字母，大写或小写</td>
+</tr>
+<tr>
+<td align="center">[:digit:]</td>
+<td align="center">数字 0-9</td>
+</tr>
+<tr>
+<td align="center">[:graph:]</td>
+<td align="center">非空字符( 非空格控制字符)</td>
+</tr>
+<tr>
+<td align="center">[:lower:]</td>
+<td align="center">小写字符a-z</td>
+</tr>
+<tr>
+<td align="center">[:upper:]</td>
+<td align="center">大写字符A-Z</td>
+</tr>
+<tr>
+<td align="center">[:cntrl:]</td>
+<td align="center">控制字符</td>
+</tr>
+<tr>
+<td align="center">[:print:]</td>
+<td align="center">非空字符( 包括空格)</td>
+</tr>
+<tr>
+<td align="center">[:punct:]</td>
+<td align="center">标点符号</td>
+</tr>
+<tr>
+<td align="center">[:blank:]</td>
+<td align="center">空格和TAB字符</td>
+</tr>
+<tr>
+<td align="center">[:xdigit:]</td>
+<td align="center">16 进制数字</td>
+</tr>
+<tr>
+<td align="center">[:space:]</td>
+<td align="center">所有空白字符( 新行、空格、制表符)</td>
+</tr>
+<tr>
+<td align="center">**注意：**<code>[[ ]]</code>  第一个中括号是匹配符[] ，匹配中括号中的任意一个字符，第二个[]是格式 如[:digit:]</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="十一-对文件操作sed命令">十一、 对文件操作（sed命令）</h1>
+<h3 id="111-简介">11.1 简介</h3>
+<p>sed是linux中提供的一个外部命令,它是一个行(流)编辑器，非交互式的对文件内容进行增删改查的操作，使用者只能在命令行输入编辑命令、指定文件名，然后在屏幕上查看输出。</p>
+<p><strong>与文本编辑器的区别：</strong> 文本编辑器:的编辑对象是文件、行编辑器的编辑对象是文件中的行</p>
+<p><strong>原理：</strong>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2Jvb2suYXlpdHVsYS5jb20vYXNzZXRzL3NlZCVFNSVBNCU4NCVFNyU5MCU4NiVFNiU5NSVCMCVFNiU4RCVBRSVFNSU4RSU5RiVFNyU5MCU4Ni5wbmc?x-oss-process=image/format,png#pic_center" alt="在这里插入图片描述"></p>
+<h3 id="112-语法">11.2 语法</h3>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">sed</span> <span class="no">[options]</span> <span class="s1">&#39;{command}[flags]&#39;</span> <span class="no">[filename]</span>
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="center">命令选项</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">-e script</td>
+<td align="center">将脚本中指定的命令添加到处理输入时执行的命令中  多条件，一行中要有多个操作</td>
+</tr>
+<tr>
+<td align="center">-f script</td>
+<td align="center">将文件中指定的命令添加到处理输入时执行的命令中</td>
+</tr>
+<tr>
+<td align="center">-n</td>
+<td align="center">抑制自动输出</td>
+</tr>
+<tr>
+<td align="center">-i</td>
+<td align="center">编辑文件内容</td>
+</tr>
+<tr>
+<td align="center">-i.bak</td>
+<td align="center">修改时同时创建.bak备份文件。</td>
+</tr>
+<tr>
+<td align="center">-r</td>
+<td align="center">使用扩展的正则表达式</td>
+</tr>
+<tr>
+<td align="center">!</td>
+<td align="center">取反 （跟在模式条件后与shell有所区别）</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">a</td>
+<td align="center">在匹配后面添加</td>
+</tr>
+<tr>
+<td align="center">i</td>
+<td align="center">在匹配前面添加</td>
+</tr>
+<tr>
+<td align="center">p</td>
+<td align="center">打印</td>
+</tr>
+<tr>
+<td align="center">d</td>
+<td align="center">删除</td>
+</tr>
+<tr>
+<td align="center">s</td>
+<td align="center">查找替换</td>
+</tr>
+<tr>
+<td align="center">c</td>
+<td align="center">更改</td>
+</tr>
+<tr>
+<td align="center">y</td>
+<td align="center">转换   N D P</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th align="center">标志位</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">数字</td>
+<td align="center">表示新文本替换的模式</td>
+</tr>
+<tr>
+<td align="center">g</td>
+<td align="center">表示用新文本替换现有文本的全部实例</td>
+</tr>
+<tr>
+<td align="center">p</td>
+<td align="center">表示打印原始的内容</td>
+</tr>
+<tr>
+<td align="center">w filename:</td>
+<td align="center">将替换的结果写入文件</td>
+</tr>
+</tbody>
+</table>
+<h1 id="十二-对输出流的处理awk">十二、 对输出流的处理（awk）</h1>
+<p>在日常计算机管理中，总会有很多数据输出到屏幕或者文件，这些输出包含了标准输出、标准错误输出。默认情况下，这些信息全部输出到默认输出设备&mdash;屏幕。然而，大量的数据输出中，只有一小部分是我们需要重点关注的，我们需要把我们需要的或者关注的这些信息过滤或者提取以备后续需要时调用。</p>
+<p><code>awk</code>命令能够集过滤、提取、运算为一体，平行命令还有<code>gawk</code>、<code>pgawk</code>、<code>dgawk</code></p>
+<h3 id="121-简介">12.1 简介</h3>
+<p>awk是一种可以处理数据、产生格式化报表的语言。awk 认为文件中的每一行是一条记录 记录与记录的分隔符为换行符,每一列是一个字段 字段与字段的分隔符默认是一个或多个空格或tab制表符。</p>
+<p>awk的工作方式是读取数据，将每一行数据视为一条记录（record）每条记录以字段分隔符分成若干字段，然后输出各个字段的值。</p>
+<h3 id="122-语法">12.2 语法</h3>
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">awk</span> <span class="no">[options] [BEGIN]</span><span class="p">{</span><span class="n">program</span><span class="p">}</span> <span class="no">[END][file]</span>
+</code></pre></div><table>
+<thead>
+<tr>
+<th align="center">命令选项</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">-F fs</td>
+<td align="center">指定描绘一行中数据字段的文件分隔符  默认为空格</td>
+</tr>
+<tr>
+<td align="center">-f file</td>
+<td align="center">指定读取程序的文件名</td>
+</tr>
+<tr>
+<td align="center">-v var=value</td>
+<td align="center">定义awk程序中使用的变量和默认值</td>
+</tr>
+<tr>
+<td align="center"><strong>注意：</strong> awk 程序脚本由左大括号和右大括号定义。脚本命令必须放置在两个大括号之间。由于awk命令行假定脚本是单文本字符串，所以必须将脚本包括在单引号内。</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>优先级:</strong>
+1)BEGIN: 在开始处理数据流之前执行，可选项
+2)program: 如何处理数据流，必选项
+3)END: 处理完数据流后执行，可选项</p>
+<h5 id="1221-对字段列的提取">12.2.1 对字段(列)的提取</h5>
+<table>
+<thead>
+<tr>
+<th align="center">内置变量</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">$0</td>
+<td align="center">表示整行文本</td>
+</tr>
+<tr>
+<td align="center">$1</td>
+<td align="center">表示文本行中的第一个数据字段</td>
+</tr>
+<tr>
+<td align="center">$2</td>
+<td align="center">表示文本行中的第二个数据字段</td>
+</tr>
+<tr>
+<td align="center">$N</td>
+<td align="center">表示文本行中的第N个数据字段</td>
+</tr>
+<tr>
+<td align="center">$NF</td>
+<td align="center">表示文本行中的最后一个数据字段</td>
+</tr>
+</tbody>
+</table>
+<h5 id="1222-对记录行的提取">12.2.2 对记录(行)的提取</h5>
+<p>NR: 指定行号</p>
+<h3 id="123-高级用法">12.3 高级用法</h3>
+<table>
+<thead>
+<tr>
+<th align="center">环境变量</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">FIELDWIDTHS</td>
+<td align="center">以空格分隔的数字列表，用空格定义每个数据字段的精确宽度</td>
+</tr>
+<tr>
+<td align="center">FS</td>
+<td align="center">输入字段分隔符号</td>
+</tr>
+<tr>
+<td align="center">OFS</td>
+<td align="center">输出字段分隔符号</td>
+</tr>
+<tr>
+<td align="center">RS</td>
+<td align="center">输入记录分隔符</td>
+</tr>
+<tr>
+<td align="center">ORS</td>
+<td align="center">输出记录分隔符号</td>
+</tr>
+</tbody>
+</table>
+    </article>
+
+    
+    <div class="prevnext">
+        
+
+
+
+<ul class="prevnext">
+    
+    <li>上一篇：
+        <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%9F%BA%E7%A1%80%E9%A2%84%E7%A7%91%E4%B8%80-%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%AD%A6linux/">
+            学习笔记 — 嵌入式基础预科（一） — 零基础学linux
+        </a>
+    </li>
+    
+    
+</ul>
+
+    </div>
+    
+    <div class="post-comments">
+        
+  
+  
+
+  
+
+    </div>
+</div>
+            </div>
+            
+            <div class="col-second">
+                <div class="col-box col-box-author">
+    <img class="avatar" src="https://img-blog.csdnimg.cn/2020031219172997.jpg" alt="姚路">
+    <div class="col-box-title name">姚路</div>
+    <p>天行健，君子以自强不息。</p>
+    <p class="contact">
+        <a href="mailto:724364708@qq.com">Email</a>
+    </p>
+</div>
+
+<div class="col-box">
+    <div class="col-box-title">Newest Posts</div>
+    <ul class="post-list">
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-shell%E8%84%9A%E6%9C%AC/" class="post-link">学习笔记 — Shell脚本</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%9F%BA%E7%A1%80%E9%A2%84%E7%A7%91%E4%B8%80-%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%AD%A6linux/" class="post-link">学习笔记 — 嵌入式基础预科（一） — 零基础学linux</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/3%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%89-%E5%9F%BA%E4%BA%8Etm4c-launchpad%E7%9A%84%E7%94%B5%E8%83%BD%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E4%BB%AA/" class="post-link">项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" class="post-link">项目经历（2）— 基于Unity的塔防游戏开发</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/" class="post-link">项目经历（1）— 基于Arduino的红外遥控器</a>
+        </li>
+        
+    </ul>
+</div>
+
+<div class="col-box post-toc hide">
+    <div class="col-box-title">TOC</div>
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="wrapper">
+    © 2020    <a href="https://hust-yl.github.io/">姚路</a>
+</div>
+    </footer>
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.11.0/dist/jquery.min.js"></script>
+
+<script src="/js/easybook.js"></script>
+
+<script src="/js/lazysizes.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/js/lightgallery-all.min.js"></script>
+<script src="/js/figure.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+
+</html>

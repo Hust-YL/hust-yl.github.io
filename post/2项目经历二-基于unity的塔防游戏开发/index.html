@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>项目经历（2）— 基于Unity的塔防游戏开发 - 姚路的博客 | 伪程序员,嵌入式学习者</title>
+
+<meta name="description" content="简介：本项目基于Unity 3D软件，使用语言为C#，目的为开发出一款单机塔防游戏；文中介绍了实现思路，以及在此思路下的逻辑代码编写并附上了最终的效果图。
+" /><meta name="keywords"
+  content="姚路, 2233, 嵌入式, 软硬结合" />
+
+
+<link rel="stylesheet" href="https://hust-yl.github.io/css/main.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/src/css/lightgallery.css">
+
+
+
+<meta property="og:title" content="项目经历（2）— 基于Unity的塔防游戏开发" />
+<meta property="og:description" content="简介：本项目基于Unity 3D软件，使用语言为C#，目的为开发出一款单机塔防游戏；文中介绍了实现思路，以及在此思路下的逻辑代码编写并附上了最终的效果图。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" />
+<meta property="article:published_time" content="2019-08-25T12:25:50+08:00" />
+<meta property="article:modified_time" content="2019-08-25T12:25:50+08:00" />
+<meta itemprop="name" content="项目经历（2）— 基于Unity的塔防游戏开发">
+<meta itemprop="description" content="简介：本项目基于Unity 3D软件，使用语言为C#，目的为开发出一款单机塔防游戏；文中介绍了实现思路，以及在此思路下的逻辑代码编写并附上了最终的效果图。">
+<meta itemprop="datePublished" content="2019-08-25T12:25:50&#43;08:00" />
+<meta itemprop="dateModified" content="2019-08-25T12:25:50&#43;08:00" />
+<meta itemprop="wordCount" content="487">
+
+
+
+<meta itemprop="keywords" content="Unity,C#,tag-1," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="项目经历（2）— 基于Unity的塔防游戏开发"/>
+<meta name="twitter:description" content="简介：本项目基于Unity 3D软件，使用语言为C#，目的为开发出一款单机塔防游戏；文中介绍了实现思路，以及在此思路下的逻辑代码编写并附上了最终的效果图。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+    <div class="header-placeholder"></div>
+    
+    <header class="header">
+        <div class="wrapper">
+    <div id="sidebar-toggle">TOC</div>
+    
+    <a class="site-title" href="https://hust-yl.github.io/">姚路</a>
+    
+    <nav class="site-nav">
+        <a class="page-link" href="/">Home</a><a class="page-link" href="/post/">Category</a><a class="page-link" href="http://github.com/Hust-YL">MyGit</a><a class="page-link" href="https://blog.csdn.net/baidu_40605776">CSDN</a>
+    </nav>
+</div>
+
+    </header>
+
+    
+    <div class="page-content">
+        <div class="wrapper">
+            
+            <div class="col-main">
+                <div class="post">
+    
+    <header class="post-header">
+        <h1 class="post-title">项目经历（2）— 基于Unity的塔防游戏开发</h1>
+        <p class="post-meta">Aug 25, 2019</p>
+    </header>
+    <article class="post-content">
+        
+        
+        
+        
+        
+        
+        <p>简介：本项目基于Unity 3D软件，使用语言为C#，目的为开发出一款单机塔防游戏；文中介绍了实现思路，以及在此思路下的逻辑代码编写并附上了最终的效果图。</p>
+<p>这个项目算是笔者第一次完成度较高且评价还行的项目了，在本篇中我将重点介绍实现的思路，舍弃Unity中的配置方式，而且由于Unity软件已过期，讲述可能会略显抽象，望诸位见谅。推荐一下当时学习的地方<a href="http://www.sikiedu.com/">SIKI学院</a>，里面有很多利用Unity开发的教程。</p>
+<h1 id="1目标">1.目标</h1>
+<p>以Unity为基础，使用C#语言，开发出一款Windows版本单机3D塔防游戏。</p>
+<h1 id="2逻辑">2.逻辑</h1>
+<p>作为塔防类游戏，他应当有良好的内部逻辑，即怪物生成、移动、击杀、塔的建造、拆毁、攻击、输赢判别；也不能缺少与用户的交互，选择哪一关、建造什么类型的塔、在哪建塔等等。
+给出两个逻辑框图：<img src="https://img-blog.csdnimg.cn/20200307204533416.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="外部输入"><img src="https://img-blog.csdnimg.cn/20200307204554815.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="内部逻辑"></p>
+<h1 id="3代码">3.代码</h1>
+<h2 id="31-敌人代码">3.1 敌人代码</h2>
+<h4 id="311移动">3.1.1移动</h4>
+<p>在Unity中，事先将起点、终点以及中间的所有拐点在地图上标出，作为一个GameObject的集合传入到敌人移动的脚本中，设置敌人的行动路线，总是朝着下一个目标点，当敌人与目标点的距离小于一定值时，更新目标点即集合的下一个值。移动中不断判断自身血量值，小于0时销毁自身，到达终点后销毁自身。在此脚本中，需要留有设置敌人移动速度、血量值、死亡效果等属性方便Unity设置。
+为了敌人的移动好看，可以给模型添加一定的动作并设置为无限循环（笔者当时并没有深入研究Unity动作的时间控制，故采用了这样的方法）。</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">transform</span><span class="p">.</span><span class="n">Translate</span><span class="p">((</span><span class="n">positions</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">position</span> <span class="p">-</span> <span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">).</span><span class="n">normalized</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">*</span> <span class="n">speed</span><span class="p">,</span><span class="n">Space</span><span class="p">.</span><span class="n">World</span><span class="p">);</span>
+<span class="cm">/*此句用于控制敌人移动
+</span><span class="cm">*positions[index].position - transform.position 下一个位置至当前位置
+</span><span class="cm">*Time.deltaTime * speed  1S内的速度
+</span><span class="cm">*Space.World 按照世界坐标移动
+</span><span class="cm">*/</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">transform</span><span class="p">.</span><span class="n">LookAt</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="n">index</span><span class="p">].</span><span class="n">position</span><span class="p">);</span><span class="c1">//更改敌人的朝向
+</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"> <span class="n">GameObject</span><span class="p">.</span><span class="n">Destroy</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">gameObject</span><span class="p">);</span><span class="c1">//销毁自身
+</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp">  <span class="n">GameObject</span> <span class="n">effect</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="n">explosionEffect</span><span class="p">,</span> <span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">transform</span><span class="p">.</span><span class="n">rotation</span><span class="p">);</span>
+  <span class="c1">//在当前地点当前角度实例化explosionEffect 即销毁效果
+</span></code></pre></div><h4 id="312-生成">3.1.2 生成</h4>
+<p>能够让敌人移动和销毁后当然就是让敌人生成了，生成的逻辑采用了简单的这一次生成的敌人都被销毁即数量为0时生成下一波，因此我们需要定义的属性为敌人模型、敌人数目、敌人波次（肯定不能只有一波敌人吧），既然一波中生成的不止一个敌人，那就需要我们定义生成速率。</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"> <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">=</span><span class="m">0</span><span class="p">;</span><span class="n">i</span><span class="p">&lt;</span><span class="n">wave</span><span class="p">.</span><span class="n">count</span><span class="p">;</span><span class="n">i</span><span class="p">++)</span> <span class="c1">//遍历当前波次的每一个个体来生成
+</span><span class="c1"></span>            <span class="p">{</span>
+                <span class="n">GameObject</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="n">wave</span><span class="p">.</span><span class="n">enemyPrefab</span><span class="p">,</span> <span class="n">START</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">.</span><span class="n">identity</span><span class="p">);</span>  
+                <span class="cm">/*初始化游戏物体
+</span><span class="cm">                *wave.enemyPrefab 在Unity中设置的敌人模型
+</span><span class="cm">                *START.position  起始点
+</span><span class="cm">                *Quaternion.identity 旋转四元素为默认（0,0,0,0）个人是这么理解的
+</span><span class="cm">                */</span>
+                <span class="n">CountEnemyAlive</span><span class="p">++;</span> <span class="c1">//当前场上存活敌人数+1
+</span><span class="c1"></span>                <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="p">!=</span> <span class="n">wave</span><span class="p">.</span><span class="n">count</span> <span class="p">-</span> <span class="m">1</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">yield</span> <span class="k">return</span> <span class="k">new</span> <span class="n">WaitForSeconds</span><span class="p">(</span><span class="n">wave</span><span class="p">.</span><span class="n">rate</span><span class="p">);</span> <span class="c1">//当生成一个非此波最后一个敌人时，等待设定的时间
+</span><span class="c1"></span>                <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="32-塔代码">3.2 塔代码</h2>
+<p>因为塔代码中的建造代码属于交互类型，笔者将放在交互节代码进行介绍。</p>
+<h4 id="321-攻击">3.2.1 攻击</h4>
+<p>在Unity中可以给塔设置一个球体的攻击范围（假设已经有塔了），同时设置这个范围和敌人模型中心为刚体，这样他们就能产生碰撞作为触发源，（这也解释了为什么不设置为一个圆形，设置为圆形差生碰撞必须是点与线相交，需要设置成相同的高度，而与球体碰属于面，虽然范围会有一定的偏差但并不会影响过多），发生碰撞之后，塔进行攻击，步骤为先瞄准敌人（仅需动塔的上半部分），而后实例化出炮弹进行瞄准攻击，给实例化炮弹设置一定的时间间隔，这便是攻击速度，当然这个是对用炮弹攻击的塔，而对于激光类采用画线的方式进行解决，或者直接在敌人身上实例出效果；当敌人走出攻击范围，应当停止攻击；当敌人已经被消灭，应当更新敌人的数组攻击下一个敌人。
+上面提到的攻击方式中，炮弹攻击方式需要拥有和敌人移动相似的移动脚本，只不过目标换为了自身位置到敌人所在位置，敌人已经被消灭时需要销毁自身，碰到敌人时需要销毁自身；其他两种方式只需要指向或者直接在敌人身上实例化即可。</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"> <span class="k">void</span> <span class="n">OnTriggerEnter</span><span class="p">(</span><span class="n">Collider</span> <span class="n">col</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">col</span><span class="p">.</span><span class="n">tag</span><span class="p">==</span><span class="s">&#34;Enemy&#34;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">enemys</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">col</span><span class="p">.</span><span class="n">gameObject</span><span class="p">);</span>   <span class="c1">//当产生碰撞的是敌人，增加
+</span><span class="c1"></span>        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">void</span> <span class="n">OnTriggerExit</span><span class="p">(</span><span class="n">Collider</span> <span class="n">col</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">enemys</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">col</span><span class="p">.</span><span class="n">gameObject</span><span class="p">);</span>   <span class="c1">//当范围内有物体移出，减少  因为其他物体是不可能移出的
+</span><span class="c1"></span>    <span class="p">}</span>
+</code></pre></div><p><strong>代码中的：<code>col.tag==&quot;Enemy&quot;</code>是需要在Unity中设置的刚体标签</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">Vector3</span> <span class="n">targetPosition</span> <span class="p">=</span> <span class="n">enemys</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">EnemyMove</span><span class="p">&gt;().</span><span class="n">AttackPosition</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">;</span>  <span class="c1">//瞄准的地方为第一个敌人的AttackPosition
+</span><span class="c1"></span><span class="n">targetPosition</span><span class="p">.</span><span class="n">y</span> <span class="p">=</span> <span class="n">head</span><span class="p">.</span><span class="n">position</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>   <span class="c1">//塔不可以上下移动类似点头
+</span><span class="c1"></span><span class="n">head</span><span class="p">.</span><span class="n">LookAt</span><span class="p">(</span><span class="n">targetPosition</span><span class="p">);</span><span class="c1">//改变瞄准方向
+</span></code></pre></div><p><strong>代码中的：<code>enemys[0].GetComponent&lt;EnemyMove&gt;().AttackPosition&quot;</code>是需要在Unity敌人模型中设置的一个点</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">void</span> <span class="n">SetTarget</span><span class="p">(</span><span class="n">Transform</span> <span class="n">_target</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">target</span> <span class="p">=</span> <span class="n">_target</span><span class="p">;</span>   <span class="c1">//设置子弹目标
+</span><span class="c1"></span>    <span class="p">}</span>
+    
+<span class="n">GameObject</span> <span class="n">shell</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="n">attackPrefab</span><span class="p">,</span> <span class="n">fire_position</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">fire_position</span><span class="p">.</span><span class="n">rotation</span><span class="p">);</span> <span class="c1">//在枪口实例化出子弹
+</span><span class="c1"></span><span class="n">shell</span><span class="p">.</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">Shell</span><span class="p">&gt;().</span><span class="n">SetTarget</span><span class="p">(</span><span class="n">enemys</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">transform</span><span class="p">);</span>  <span class="c1">//设置目标
+</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"> <span class="k">void</span> <span class="n">UpdateEnemy</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">List</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="n">emptyIndex</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;();</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">index</span><span class="p">=</span><span class="m">0</span><span class="p">;</span><span class="n">index</span><span class="p">&lt;</span><span class="n">enemys</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span><span class="n">index</span><span class="p">++)</span><span class="c1">// 采用循环判断每一个敌人
+</span><span class="c1"></span>        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">enemys</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">emptyIndex</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">index</span><span class="p">);</span><span class="c1">// 为空的被移除
+</span><span class="c1"></span>            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">=</span><span class="m">0</span><span class="p">;</span><span class="n">i</span><span class="p">&lt;</span><span class="n">emptyIndex</span><span class="p">.</span><span class="n">Count</span><span class="p">;</span><span class="n">i</span><span class="p">++)</span>
+        <span class="p">{</span>
+            <span class="n">enemys</span><span class="p">.</span><span class="n">RemoveAt</span><span class="p">(</span><span class="n">emptyIndex</span><span class="p">[</span><span class="n">i</span><span class="p">]-</span><span class="n">i</span><span class="p">);</span><span class="c1">// 将去除了空集合的新敌人集合赋值给原本的敌人集合
+</span><span class="c1"></span>        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">laserRendener</span><span class="p">.</span><span class="n">SetPositions</span><span class="p">(</span><span class="k">new</span> <span class="n">Vector3</span> <span class="p">[]{</span> <span class="n">fire_position</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">enemys</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">EnemyMove</span><span class="p">&gt;().</span><span class="n">AttackPosition</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">});</span> <span class="c1">//采用激光攻击的塔 采用从开火处至敌人攻击位置画线的方式
+</span><span class="c1"></span><span class="n">enemys</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">EnemyMove</span><span class="p">&gt;().</span><span class="n">TakeDamage</span><span class="p">(</span><span class="n">damagerate</span><span class="p">*</span><span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span><span class="p">);</span> <span class="c1">//收到的伤害则按照时间计算
+</span><span class="c1"></span>
+<span class="n">target</span><span class="p">.</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">EnemyMove</span><span class="p">&gt;().</span><span class="n">TakeDamage</span><span class="p">(</span><span class="n">damage</span><span class="p">);</span> <span class="c1">//采用炮弹攻击的则是固定伤害
+</span></code></pre></div><h4 id="322-属性">3.2.2 属性</h4>
+<p>属性这一块没什么好说的，只要留出来诸如塔类型，建造费用、升级费用以及相应的拆毁费用等属性在Unity中进行设定即可，需要注意的是将所有塔类型罗列出来，这样在建造的时候才能知道。</p>
+<h2 id="33-交互代码">3.3 交互代码</h2>
+<h4 id="331-页面选择">3.3.1 页面选择</h4>
+<p>看标题便知道是干啥了，每一个场景下需要干的事情不同，如关卡选择页，游戏界面页，可以在Unity中为各个页面进行编号，有关按键亦是如此，可以为按键单独添加一个函数，检测鼠标点下位置来进行响应。</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="n">SceneManager</span><span class="p">.</span><span class="n">LoadScene</span><span class="p">(</span><span class="m">1</span><span class="p">);</span>   <span class="c1">//跳转到页面1
+</span><span class="c1"></span>
+<span class="k">public</span> <span class="k">void</span> <span class="n">OnExitGame</span><span class="p">()</span>    <span class="c1">//点击退出按键的函数
+</span><span class="c1"></span>    <span class="p">{</span>
+<span class="cp">#if UNITY_EDITOR
+</span><span class="cp"></span>        <span class="n">UnityEditor</span><span class="p">.</span><span class="n">EditorApplication</span><span class="p">.</span><span class="n">isPlaying</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>   <span class="c1">//在Unity中预览时退出的方式
+</span><span class="c1"></span><span class="cp">#else
+</span><span class="cp"></span>        <span class="n">Application</span><span class="p">.</span><span class="n">Quit</span><span class="p">();</span>   <span class="c1">//打包成APP后的退出方式
+</span><span class="c1"></span><span class="cp">#endif
+</span><span class="cp"></span>    <span class="p">}</span>
+    
+<span class="k">public</span> <span class="k">void</span> <span class="n">OnButtonPause</span><span class="p">()</span>   <span class="c1">//点击暂停按键的函数
+</span><span class="c1"></span>	<span class="p">{</span>
+    	<span class="n">pauseUI</span><span class="p">.</span><span class="n">SetActive</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>   <span class="c1">//显示暂停界面UI为
+</span><span class="c1"></span>        <span class="n">Time</span><span class="p">.</span><span class="n">timeScale</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>        <span class="c1">//设置游戏界面时间速度为0
+</span><span class="c1"></span>    <span class="p">}</span>
+</code></pre></div><h4 id="332-键盘输入">3.3.2 键盘输入</h4>
+<p>键盘输入主要用于两个方面，一是通过键盘进行视角的移动，二是通过键盘进行塔类型的选择。</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">void</span> <span class="n">Update</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">float</span> <span class="n">h</span> <span class="p">=</span> <span class="n">Input</span><span class="p">.</span><span class="n">GetAxis</span><span class="p">(</span><span class="s">&#34;Horizontal&#34;</span><span class="p">);</span>    <span class="c1">//左右方向键
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">v</span> <span class="p">=</span> <span class="n">Input</span><span class="p">.</span><span class="n">GetAxis</span><span class="p">(</span><span class="s">&#34;Vertical&#34;</span><span class="p">);</span>      <span class="c1">//上下方向键
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">mouse</span> <span class="p">=</span> <span class="n">Input</span><span class="p">.</span><span class="n">GetAxis</span><span class="p">(</span><span class="s">&#34;Mouse ScrollWheel&#34;</span><span class="p">);</span>  <span class="c1">//鼠标滚轮
+</span><span class="c1"></span>    <span class="n">transform</span><span class="p">.</span><span class="n">Translate</span><span class="p">(</span><span class="k">new</span> <span class="n">Vector3</span><span class="p">(</span><span class="n">h</span><span class="p">*</span><span class="n">speed</span><span class="p">,</span> <span class="n">mouse</span><span class="p">*</span><span class="n">mousespeed</span><span class="p">,</span> <span class="n">v</span><span class="p">*</span><span class="n">speed</span><span class="p">)</span> <span class="p">*</span> <span class="n">Time</span><span class="p">.</span><span class="n">deltaTime</span> <span class="p">,</span><span class="n">Space</span><span class="p">.</span><span class="n">World</span><span class="p">);</span>   <span class="c1">//设置移动的速率
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">if</span><span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetKeyDown</span><span class="p">(</span><span class="n">KeyCode</span><span class="p">.</span><span class="n">Q</span><span class="p">))</span>
+<span class="p">{</span>
+	<span class="n">turretone</span><span class="p">.</span><span class="n">isOn</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>    <span class="c1">//当Q键被按下时，第一个塔被选择
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><h4 id="333-与塔相关">3.3.3 与塔相关</h4>
+<p>与塔相关的无非三项，建造、升级、拆毁，而这三者均基于选择到了建造地点，Unity中可以为我们的物体打上标签，我们将所有可以建造的地方打上一个“MapCube”的标签表示可以用于建造，当我们选择了要建造的塔并点击到该物体时，进行金钱是否充足的判断，充足则建造，而如果此物体上已经有一个塔，那么就弹出升级和拆毁的UI界面，点击升级则升级，拆毁则销毁此物体，此外为了用户可以清楚地知道当前鼠标点在哪一块上，可以改变该物体颜色，鼠标移出后变回原样即可。</p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">if</span><span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">GetMouseButtonDown</span><span class="p">(</span><span class="m">0</span><span class="p">))</span><span class="c1">//检测鼠标按下
+</span><span class="c1"></span><span class="p">{</span>
+	<span class="n">Ray</span> <span class="n">ray</span> <span class="p">=</span> <span class="n">Camera</span><span class="p">.</span><span class="n">main</span><span class="p">.</span><span class="n">ScreenPointToRay</span><span class="p">(</span><span class="n">Input</span><span class="p">.</span><span class="n">mousePosition</span><span class="p">);</span><span class="c1">//采用视线检测的方法进行判断在哪一个物体
+</span><span class="c1"></span>	<span class="n">RaycastHit</span> <span class="n">hit</span><span class="p">;</span>
+	<span class="kt">bool</span> <span class="n">isCollider</span> <span class="p">=</span> <span class="n">Physics</span><span class="p">.</span><span class="n">Raycast</span><span class="p">(</span><span class="n">ray</span><span class="p">,</span><span class="k">out</span> <span class="n">hit</span> <span class="p">,</span><span class="m">1000</span><span class="p">,</span> <span class="n">LayerMask</span><span class="p">.</span><span class="n">GetMask</span><span class="p">(</span><span class="s">&#34;MapCube&#34;</span><span class="p">));</span><span class="c1">//得到点击的地方是否是MapCube
+</span><span class="c1"></span>	<span class="k">if</span><span class="p">(</span><span class="n">isCollider</span><span class="p">)</span>   <span class="c1">//当点击的是MapCube
+</span><span class="c1"></span>	<span class="p">{</span>
+		<span class="n">MapCube</span> <span class="n">mapCube</span> <span class="p">=</span> <span class="n">hit</span><span class="p">.</span><span class="n">collider</span><span class="p">.</span><span class="n">GetComponent</span><span class="p">&lt;</span><span class="n">MapCube</span><span class="p">&gt;();</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">SelectedTurretData</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">&amp;&amp;</span> <span class="n">mapCube</span><span class="p">.</span><span class="n">TurretGo</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span><span class="c1">// 当有选择塔并且这个MapCube上没有塔则建造
+</span><span class="c1"></span>		<span class="p">{</span>
+           <span class="cm">/* 判断是否能够建造
+</span><span class="cm">           * 建造就扣钱，生成塔
+</span><span class="cm">           * 不能就触发缺钱动画MoneyAnimator
+</span><span class="cm">           */</span> 
+           <span class="k">if</span> <span class="p">(</span><span class="n">money</span> <span class="p">&gt;=</span> <span class="n">SelectedTurretData</span><span class="p">.</span><span class="n">cost</span><span class="p">)</span>
+           <span class="p">{</span>
+               <span class="n">ChangeMoney</span><span class="p">(-</span><span class="n">SelectedTurretData</span><span class="p">.</span><span class="n">cost</span><span class="p">);</span>
+               <span class="n">mapCube</span><span class="p">.</span><span class="n">BulidTurret</span><span class="p">(</span><span class="n">SelectedTurretData</span><span class="p">);</span>
+           <span class="p">}</span>
+           <span class="k">else</span>
+           <span class="p">{</span>
+               <span class="n">moneyAnimator</span><span class="p">.</span><span class="n">SetTrigger</span><span class="p">(</span><span class="s">&#34;MoneyAnimator&#34;</span><span class="p">);</span>
+           <span class="p">}</span>
+       <span class="p">}</span>
+       <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">mapCube</span><span class="p">.</span><span class="n">TurretGo</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>  <span class="c1">//这个MapCube上有塔则显示升级、拆毁界面UI
+</span><span class="c1"></span>       <span class="p">{</span>
+       <span class="n">ShowChangeUI</span><span class="p">(</span><span class="n">mapCube</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">mapCube</span><span class="p">.</span><span class="n">isUpgrated</span><span class="p">);</span>
+       <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">void</span> <span class="n">ChangeMoney</span><span class="p">(</span><span class="kt">int</span> <span class="n">change</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">money</span> <span class="p">+=</span> <span class="n">change</span><span class="p">;</span>
+        <span class="n">moneyText</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span>  <span class="n">money</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s">&#34;###,###&#34;</span><span class="p">);</span><span class="c1">// 根据参数将金钱改变，并且转化为1000位表示形式字符串
+</span><span class="c1"></span>    <span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">void</span> <span class="n">ChangeMoney</span><span class="p">(</span><span class="kt">int</span> <span class="n">change</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">money</span> <span class="p">+=</span> <span class="n">change</span><span class="p">;</span>
+        <span class="n">moneyText</span><span class="p">.</span><span class="n">text</span> <span class="p">=</span>  <span class="n">money</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s">&#34;###,###&#34;</span><span class="p">);</span><span class="c1">// 根据参数将金钱改变，并且转化为1000位表示形式字符串
+</span><span class="c1"></span>    <span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"> <span class="k">public</span> <span class="k">void</span> <span class="n">BulidTurret</span><span class="p">(</span><span class="n">TurretData</span> <span class="n">turretType</span><span class="p">)</span>   <span class="c1">//建造塔时调用的函数  根据传进来的参数确定塔的类型，并实例化塔和建造塔的特效，将塔的等级、建造费用、拆毁返现数据记录方便调用
+</span><span class="c1"></span><span class="p">{</span>
+     <span class="k">this</span><span class="p">.</span><span class="n">turretData</span> <span class="p">=</span> <span class="n">turretType</span><span class="p">;</span>
+     <span class="n">isUpgrated</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+     <span class="n">TurretGo</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="n">turretData</span><span class="p">.</span><span class="n">turretPrefab</span><span class="p">,</span> <span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">.</span><span class="n">identity</span><span class="p">);</span>
+     <span class="n">level</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+     <span class="n">GameObject</span> <span class="n">effect</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="n">bulidEffect</span><span class="p">,</span> <span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">.</span><span class="n">identity</span><span class="p">);</span>
+     <span class="n">cost</span> <span class="p">=</span> <span class="n">turretData</span><span class="p">.</span><span class="n">costUpgraded</span><span class="p">;</span>
+     <span class="n">back</span> <span class="p">=</span> <span class="n">turretData</span><span class="p">.</span><span class="n">back</span><span class="p">;</span>
+     <span class="n">Destroy</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">void</span> <span class="n">UpgrateTurret</span><span class="p">()</span>  <span class="c1">//升级塔时调用的函数，与建造的区别就是要先拆除原来已有的塔，根据判断来确定现在应当是哪一等级的建造
+</span><span class="c1"></span>    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">isUpgrated</span><span class="p">==</span><span class="k">true</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">Destroy</span><span class="p">(</span><span class="n">TurretGo</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">level</span> <span class="p">==</span> <span class="m">2</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">TurretGo</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="n">turretData</span><span class="p">.</span><span class="n">turretFinalPrefab</span><span class="p">,</span> <span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">.</span><span class="n">identity</span><span class="p">);</span>
+            <span class="n">level</span> <span class="p">=</span> <span class="m">3</span><span class="p">;</span>
+            <span class="n">cost</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+            <span class="n">back</span> <span class="p">=</span> <span class="n">turretData</span><span class="p">.</span><span class="n">backFinal</span><span class="p">;</span>
+            <span class="n">isUpgrated</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">level</span><span class="p">==</span><span class="m">1</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">TurretGo</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="n">turretData</span><span class="p">.</span><span class="n">turretUpgradedPrefab</span><span class="p">,</span> <span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">.</span><span class="n">identity</span><span class="p">);</span>
+            <span class="n">level</span> <span class="p">=</span> <span class="m">2</span><span class="p">;</span>
+            <span class="n">cost</span> <span class="p">=</span> <span class="n">turretData</span><span class="p">.</span><span class="n">costFinal</span><span class="p">;</span>
+            <span class="n">back</span> <span class="p">=</span> <span class="n">turretData</span><span class="p">.</span><span class="n">backUpgrade</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">GameObject</span> <span class="n">effect</span> <span class="p">=</span> <span class="n">GameObject</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="n">bulidEffect</span><span class="p">,</span> <span class="n">transform</span><span class="p">.</span><span class="n">position</span><span class="p">,</span> <span class="n">Quaternion</span><span class="p">.</span><span class="n">identity</span><span class="p">);</span>
+        <span class="n">Destroy</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>
+    <span class="p">}</span>
+</code></pre></div><p><strong>当时在写完升级时，在Unity中进行测试，发现从一级塔会直接调到三级塔，排查后发现是连续判断出了问题，即刚开始是1，然后升级变为2，这时又继续进行了判断，进行了升级，故修改为先判断是否要2升3，再判断是否要1升2</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="k">void</span> <span class="n">ShowChangeUI</span><span class="p">(</span><span class="n">Vector3</span> <span class="n">pos</span><span class="p">,</span><span class="kt">bool</span> <span class="n">isDisabled</span><span class="p">=</span><span class="k">false</span><span class="p">)</span>   <span class="c1">//当升级、拆毁界面出现时调用的函数   步骤为停止隐藏，并重新激活画布（相当于重启）  在点击位置显示
+</span><span class="c1"></span><span class="p">{</span>
+	<span class="n">StopCoroutine</span><span class="p">(</span><span class="s">&#34;HideChangeUI&#34;</span><span class="p">);</span>
+    <span class="n">ChangeCanvas</span><span class="p">.</span><span class="n">SetActive</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
+    <span class="n">ChangeCanvas</span><span class="p">.</span><span class="n">SetActive</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+    <span class="n">ChangeCanvas</span><span class="p">.</span><span class="n">transform</span><span class="p">.</span><span class="n">position</span> <span class="p">=</span> <span class="n">pos</span><span class="p">;</span>
+    <span class="n">upgrateButton</span><span class="p">.</span><span class="n">interactable</span> <span class="p">=</span> <span class="p">!</span><span class="n">isDisabled</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-csharp" data-lang="csharp"><span class="c1">//鼠标进入退出时的函数
+</span><span class="c1"></span><span class="k">private</span> <span class="k">void</span> <span class="n">OnMouseEnter</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">TurretGo</span><span class="p">==</span><span class="k">null</span><span class="p">&amp;&amp;</span><span class="n">EventSystem</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">IsPointerOverGameObject</span><span class="p">()==</span><span class="k">false</span><span class="p">)</span>
+	<span class="p">{</span>
+	<span class="n">mapcube_color</span><span class="p">.</span><span class="n">material</span><span class="p">.</span><span class="n">color</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">green</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="k">void</span> <span class="n">OnMouseExit</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">mapcube_color</span><span class="p">.</span><span class="n">material</span><span class="p">.</span><span class="n">color</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">white</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div><h1 id="4最终效果">4.最终效果</h1>
+<p>首先先感谢一下小伙伴，笔者对于写代码还有些耐心，然鹅对于美学之类的就很随意，小伙伴做出来的地图和一些界面UI是真的漂亮，后面如果他开通了博客会放他的链接的，再次谢过！
+<strong>参数调节界面：</strong>
+<img src="https://img-blog.csdnimg.cn/2020030911225687.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">
+<strong>游戏开始界面：</strong>
+<img src="https://img-blog.csdnimg.cn/20200309112352738.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">
+<strong>关卡选择界面</strong>
+<img src="https://img-blog.csdnimg.cn/20200309112421186.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">
+<strong>第一关游戏界面</strong>
+<img src="https://img-blog.csdnimg.cn/20200309112501571.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">
+<strong>暂停界面</strong>
+<img src="https://img-blog.csdnimg.cn/20200309112523886.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">
+<strong>失败界面</strong>
+<img src="https://img-blog.csdnimg.cn/20200309112554338.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h1 id="5总结">5.总结</h1>
+<p>网上有关各类工具的教程很多，是不可能学完的，最重要的是在使用工具的过程中思考，有着明确的逻辑才能举一反三，达到良好的效果。</p>
+    </article>
+
+    
+    <div class="prevnext">
+        
+
+
+
+<ul class="prevnext">
+    
+    <li>上一篇：
+        <a href="https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/">
+            项目经历（1）— 基于Arduino的红外遥控器
+        </a>
+    </li>
+    
+    
+    <li>下一篇：
+        <a href="https://hust-yl.github.io/post/3%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%89-%E5%9F%BA%E4%BA%8Etm4c-launchpad%E7%9A%84%E7%94%B5%E8%83%BD%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E4%BB%AA/">
+            项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪
+        </a>
+    </li>
+    
+</ul>
+
+    </div>
+    
+    <div class="post-comments">
+        
+  
+  
+
+  
+
+    </div>
+</div>
+            </div>
+            
+            <div class="col-second">
+                <div class="col-box col-box-author">
+    <img class="avatar" src="https://img-blog.csdnimg.cn/2020031219172997.jpg" alt="姚路">
+    <div class="col-box-title name">姚路</div>
+    <p>天行健，君子以自强不息。</p>
+    <p class="contact">
+        <a href="mailto:724364708@qq.com">Email</a>
+    </p>
+</div>
+
+<div class="col-box">
+    <div class="col-box-title">Newest Posts</div>
+    <ul class="post-list">
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-shell%E8%84%9A%E6%9C%AC/" class="post-link">学习笔记 — Shell脚本</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%9F%BA%E7%A1%80%E9%A2%84%E7%A7%91%E4%B8%80-%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%AD%A6linux/" class="post-link">学习笔记 — 嵌入式基础预科（一） — 零基础学linux</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/3%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%89-%E5%9F%BA%E4%BA%8Etm4c-launchpad%E7%9A%84%E7%94%B5%E8%83%BD%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E4%BB%AA/" class="post-link">项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" class="post-link">项目经历（2）— 基于Unity的塔防游戏开发</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/" class="post-link">项目经历（1）— 基于Arduino的红外遥控器</a>
+        </li>
+        
+    </ul>
+</div>
+
+<div class="col-box post-toc hide">
+    <div class="col-box-title">TOC</div>
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="wrapper">
+    © 2020    <a href="https://hust-yl.github.io/">姚路</a>
+</div>
+    </footer>
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.11.0/dist/jquery.min.js"></script>
+
+<script src="/js/easybook.js"></script>
+
+<script src="/js/lazysizes.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/js/lightgallery-all.min.js"></script>
+<script src="/js/figure.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+
+</html>

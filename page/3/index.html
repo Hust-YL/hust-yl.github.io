@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta name="generator" content="Hugo 0.67.0" />
+    
+<meta charset="utf-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>姚路的博客 | 伪程序员,嵌入式学习者</title>
+
+<meta name="description" content="伪程序员,嵌入式学习者。" /><meta name="keywords"
+  content="姚路, 2233, 嵌入式, 软硬结合" />
+
+
+<link rel="stylesheet" href="https://hust-yl.github.io/css/main.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/src/css/lightgallery.css">
+
+
+
+<meta property="og:title" content="姚路的博客 | 伪程序员,嵌入式学习者" />
+<meta property="og:description" content="伪程序员,嵌入式学习者。" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hust-yl.github.io/" />
+<meta property="og:updated_time" content="2020-02-05T12:25:50+08:00" />
+<meta itemprop="name" content="姚路的博客 | 伪程序员,嵌入式学习者">
+<meta itemprop="description" content="伪程序员,嵌入式学习者。"><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="姚路的博客 | 伪程序员,嵌入式学习者"/>
+<meta name="twitter:description" content="伪程序员,嵌入式学习者。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+    <div class="header-placeholder"></div>
+    
+    <header class="header">
+        <div class="wrapper">
+    <div id="sidebar-toggle">TOC</div>
+    
+    <a class="site-title" href="https://hust-yl.github.io/">姚路</a>
+    
+    <nav class="site-nav">
+        <a class="page-link" href="/">Home</a><a class="page-link" href="/post/">Category</a><a class="page-link" href="http://github.com/Hust-YL">MyGit</a><a class="page-link" href="https://blog.csdn.net/baidu_40605776">CSDN</a>
+    </nav>
+</div>
+
+    </header>
+
+    
+    <div class="page-content">
+        <div class="wrapper">
+            
+            <div class="col-main">
+                <div class="home">
+    <a class="rss-link" href="https://hust-yl.github.io/index.xml">RSS</a>
+    <a class="rss-link" href="https://hust-yl.github.io/sitemap.xml">SITEMAP</a>
+    <h1 class="page-heading">Articles</h1>
+    
+    <ul class="post-list">
+        
+        
+        
+        <li>
+            <h2><a href="https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/">项目经历（1）— 基于Arduino的红外遥控器</a></h2>
+            <div class="post-meta">Oct 05, 2018</div>
+            <div class="post-excerpt">
+                这是笔者大学时着手的第一个项目，从选题和解决方案上都比较菜，仅仅为记录而用。（PS：空调红外信号较为复杂，此次算是一个失败的案例，也希望有大佬在评论中指点一二） ​ 话不多说，进入正题：
+1. 系统方案 1.1 目标 ​ 通过 Arduino UNO 板与其他模块的配合，实现对家用红外控制电器的控制； ​ 功能分为两大部分，一是实现对外部温度的实时监控并根据此来选择打开空调或者关闭空调，二是对预先写入程序的遥控代码以及语音进行匹配，从而进行语音控制。
+1.2 思路 ​ Arduino UNO 板连接红外接收模块，红外发射模块，语音控制模块，温湿度检测模块分别达到接收并解析红外信号，模拟红外 信号的发射，识别语音，实时检测环境温度的功能。根据外界条件进行判断，达到控制目的。2. 具体实现 2.1 模块简介 Arduino模块大多需要库文件的驱动，之前大部分库文件均靠github寻找，而新版本Arduino IDE中库文件管理可以极大方便这种操作，最新版IDE下载地址，库管理操作教程。
+2.1.1 红外发射模块与红外接收模块 红外信号的解码和模仿 ​ 红外遥控器发出的信号是一连串的二进制脉冲码，而红外接收模块可以根据你选定的协议方式将接收到的信号转换为二进制内容显示在串口，而红外发射模块可以根据给定数组进行二进制信号的输出。
+硬件图与连接方式 红外接收模块：VCC--------5V GND--------GND DAT--------PIN11 红外接收模块：VCC--------5V GND--------GND DAT--------PIN8 代码部分
+//此段为破译并将二进制信号赋值入数组single1中 void dump1(decode_results *results) { count = results-&gt;rawlen; for (int i = 1; i &lt; count; i++) { if (i &amp; 1) { single1[i-1]=(results-&gt;rawbuf[i]*USECPERTICK); } else { single1[i-1]=((unsigned long) results-&gt;rawbuf[i]*USECPERTICK); } Serial.
+            </div>
+        </li>
+        
+    </ul>
+    
+    <div class="pagination">
+        <a href="/page/2/" class="previous">PREV</a>
+        <span class="page_number ">3 of 3</span>
+        
+    </div>
+</div>
+            </div>
+            
+            <div class="col-second">
+                <div class="col-box col-box-author">
+    <img class="avatar" src="https://img-blog.csdnimg.cn/2020031219172997.jpg" alt="姚路">
+    <div class="col-box-title name">姚路</div>
+    <p>天行健，君子以自强不息。</p>
+    <p class="contact">
+        <a href="mailto:724364708@qq.com">Email</a>
+    </p>
+</div>
+
+<div class="col-box">
+    <div class="col-box-title">Newest Posts</div>
+    <ul class="post-list">
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/3%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%89-%E5%9F%BA%E4%BA%8Etm4c-launchpad%E7%9A%84%E7%94%B5%E8%83%BD%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E4%BB%AA/" class="post-link">项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" class="post-link">项目经历（2）— 基于Unity的塔防游戏开发</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/" class="post-link">项目经历（1）— 基于Arduino的红外遥控器</a>
+        </li>
+        
+    </ul>
+</div>
+
+<div class="col-box post-toc hide">
+    <div class="col-box-title">TOC</div>
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="wrapper">
+    © 2020    <a href="https://hust-yl.github.io/">姚路</a>
+</div>
+    </footer>
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.11.0/dist/jquery.min.js"></script>
+
+<script src="/js/easybook.js"></script>
+
+<script src="/js/lazysizes.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/js/lightgallery-all.min.js"></script>
+<script src="/js/figure.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+
+</html>

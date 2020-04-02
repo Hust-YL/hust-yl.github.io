@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪 - 姚路的博客 | 伪程序员,嵌入式学习者</title>
+
+<meta name="description" content="简介：本项目基于TM4C LaunchPad，工程软件为CCS，目的是实现外部电压电流的采集和计算，最终显示并发送；文中重点分析了如何实现要求并对ADC采样函数做了深入的分析。
+" /><meta name="keywords"
+  content="姚路, 2233, 嵌入式, 软硬结合" />
+
+
+<link rel="stylesheet" href="https://hust-yl.github.io/css/main.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/src/css/lightgallery.css">
+
+
+
+<meta property="og:title" content="项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪" />
+<meta property="og:description" content="简介：本项目基于TM4C LaunchPad，工程软件为CCS，目的是实现外部电压电流的采集和计算，最终显示并发送；文中重点分析了如何实现要求并对ADC采样函数做了深入的分析。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hust-yl.github.io/post/3%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%89-%E5%9F%BA%E4%BA%8Etm4c-launchpad%E7%9A%84%E7%94%B5%E8%83%BD%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E4%BB%AA/" />
+<meta property="article:published_time" content="2019-12-05T12:25:50+08:00" />
+<meta property="article:modified_time" content="2019-12-05T12:25:50+08:00" />
+<meta itemprop="name" content="项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪">
+<meta itemprop="description" content="简介：本项目基于TM4C LaunchPad，工程软件为CCS，目的是实现外部电压电流的采集和计算，最终显示并发送；文中重点分析了如何实现要求并对ADC采样函数做了深入的分析。">
+<meta itemprop="datePublished" content="2019-12-05T12:25:50&#43;08:00" />
+<meta itemprop="dateModified" content="2019-12-05T12:25:50&#43;08:00" />
+<meta itemprop="wordCount" content="224">
+
+
+
+<meta itemprop="keywords" content="LaunchPad,C,tag-1," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪"/>
+<meta name="twitter:description" content="简介：本项目基于TM4C LaunchPad，工程软件为CCS，目的是实现外部电压电流的采集和计算，最终显示并发送；文中重点分析了如何实现要求并对ADC采样函数做了深入的分析。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+    <div class="header-placeholder"></div>
+    
+    <header class="header">
+        <div class="wrapper">
+    <div id="sidebar-toggle">TOC</div>
+    
+    <a class="site-title" href="https://hust-yl.github.io/">姚路</a>
+    
+    <nav class="site-nav">
+        <a class="page-link" href="/">Home</a><a class="page-link" href="/post/">Category</a><a class="page-link" href="http://github.com/Hust-YL">MyGit</a><a class="page-link" href="https://blog.csdn.net/baidu_40605776">CSDN</a>
+    </nav>
+</div>
+
+    </header>
+
+    
+    <div class="page-content">
+        <div class="wrapper">
+            
+            <div class="col-main">
+                <div class="post">
+    
+    <header class="post-header">
+        <h1 class="post-title">项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪</h1>
+        <p class="post-meta">Dec 05, 2019</p>
+    </header>
+    <article class="post-content">
+        
+        
+        
+        
+        
+        
+        <p>简介：本项目基于TM4C LaunchPad，工程软件为CCS，目的是实现外部电压电流的采集和计算，最终显示并发送；文中重点分析了如何实现要求并对ADC采样函数做了深入的分析。</p>
+<p>这个算是课程的设计任务，考虑到下一届可能还是这个题，笔者在此对具体如何实现不会有太多的笔墨，重心会放在思路和一些需要注意的细节上。（如果是学弟学妹就将就着看吧233333）
+先来简单介绍一下，TM4C LaunchPad是德州仪器的 Tiva™ C 系列微控制器，此系列采用基于 ARM® Cortex -M 的卓越架构，而此次使用的是基于 TM4C123GH6PM 控制器的实验板卡，处理器为Cortex-M4 ，自带仿真器。扩展模块采用 DY-Tiva-PB 口袋实验板。</p>
+<h1 id="1目标">1.目标</h1>
+<p>设计一个电能分析仪和一个测试用三相信号源，能实现以下功能。（直接搬的课程要求，如果老师看到了不要打我啊）</p>
+<ol>
+<li>测量各项电能质量参数，包括：三相电压、三相电流、频率、有功、无
+功、视在功率，功率因数、电压偏差、三相电压谐波、三相电流谐波、电压不平衡度、电流不平衡度。</li>
+<li>在 LCD 上显示各测量值和电压和电流的频谱图。</li>
+<li>与 PC 机通过无线通信连接，将测量数据传到串口助手上显示。</li>
+<li>设计一个测试用三相信号源，用 3 路 PWM 模拟三相电压信号, 3 路 PWM模拟三相电流信号。
+<strong>精度要求就不列了，跟采样和计算有关</strong></li>
+</ol>
+<h1 id="2分析">2.分析</h1>
+<ol>
+<li>要计算的参数很多，但仔细分类会发现只要采样得到了电压、电流一个周期内的离散值，对其做一次或者两次基础运算，便可以得到除去频率以外的所有参数，包括频谱。</li>
+<li>要显示这么多数据，TIVA-PB板上的LCD显示屏一次肯定是显示不完的，所以需要有翻面的设计。</li>
+<li>无线通讯当然就是采用最简单的UART协议的蓝牙。（难道要说难的我不会吗？）</li>
+<li>模拟三相电压、电流信号也很简单，利用学过的电路理论再配合示波器搭建一个一阶RC滤波器即可达到，不过建议是测试电压感应模块时，用信号发生器进行即可，而电流模块使用实验室的三相电源串上滑动变阻器进行测试，笔者是没有用到自己做的三相电源进行测试。</li>
+</ol>
+<h1 id="3思路">3.思路</h1>
+<p>经过分析，相信你已经针对每一步有了自己的想法，下面就简单叙述一下我们当时的思路：</p>
+<ol>
+<li>TIVA板肯定是直接测不了220V以及低于0V的电压和电流的，所以需要经过一个互感器器降压电路，采用的是TVA1421-01M 立式穿芯小型保护交流电压电流通用互感器，再加上一个偏置电路，这样就可以得到始终大于0且在测量范围内的信号了。</li>
+<li>先来解决频率测量问题，正弦的频率是很难去测量的，项目初期一度认为靠采集点的值进行时间的判断，但其实并不可行，在给的硬件电路中，提供了由OPA376（运放）和LM393（双电压比较器）设计而成的过零比较器，这样便可以得到与正弦信号同频率的正方波信号，使用timer触发器计算一段时间内上升沿和下降沿次数，便可以得到正弦信号的频率。
+<strong>频率计算按照精度要求，需要将不满一个周期的时间算入</strong></li>
+<li>采样肯定是必须的，那采样的触发该如何设置呢？假设使用固定时间的timer触发，这样的方法看似可行，但是会带来很大的误差，原因便是外部信号不一定就是稳定的50Hz正弦信号，如果按照给定的时间那就肯定会出现这个周期多采下个周期少采的情况，因此需要使用倍频，将上面过零比较出来的信号引出一路作为倍频电路的输入，再结合配制成外部触发采样的ADC（下降沿触发或上升沿触发），便可以在一个周期中得到固定数目的点，这样进行计算就会很精确了。
+<strong>倍频电路采用1片CD4046（锁相环集成电路）和2片74LS393（计数器），电路设计可以<a href="https://wenku.baidu.com/view/0efbbf3b83c4bb4cf7ecd15b.html">参考</a>，目的很明确，便是输出的信号经过分频电路后，要与输入信号完全相同以达到锁相倍频的目的，CD4046旁的电阻、电容参数需要仔细选择，影响了倍频信号频率的上限</strong></li>
+<li>得到采样数据后，进行运算、保存，而使用按键进行翻页判断，以显示不同的数据，针对无线通讯，由于蓝牙一次只能发送一位数据，所以需要将数据进行拆解，然后发送。</li>
+<li>三相模拟信号只要能够产生互差120°的信号再经过相同的滤波电路后即可达到。</li>
+</ol>
+<h1 id="4防坑">4.防坑</h1>
+<p>当时做这个东西的时候遇到了很多问题，包括玄学和逻辑问题，在这里笔者会一一列出来。</p>
+<h3 id="41-软件">4.1 软件</h3>
+<ol>
+<li>时序十分重要！时序十分重要！时序十分重要！因为会一直采集数据，进行运算，并且需要定时更新，发送，一旦时序设计的有问题就会影响你的ADC采样甚至让程序崩盘。</li>
+<li>小数使用float不要用double。有两个原因，一是double占用内存太多，容易导致烧录失败或者在计算的时候内存溢出导致程序崩溃，二是double计算时间较长，很影响ADC的采样。</li>
+<li>慎用SysCtlDelay（）函数，容易造成timer的破坏，空循环它不香吗。</li>
+<li>所有变量一定要在声明的时候就初始化，当时就遇到了调用事先写好的初始化函数再进行却出现错误，而开始初始化了就正确的玄学问题。</li>
+<li>FFT算法比较复杂，不一定要从原理上去理解它，先学会用，再去懂，所有的技术都是从模仿开始的。</li>
+<li>也会出现写了刷新函数页面不刷新的玄学问题。（单步调试没问题，但是运行起来就不行，气不气？）</li>
+<li>仔细来谈谈ADC采样的问题：
+<strong>TM4C123GH6PM 包含两个 ADC 模块，每个 ADC 模块包含 4 个可编程序列发生器，当配置一个采样序列时，同一序列被配置成不同管脚功能是允许的</strong>。下图是各个序列发生器能采样的数目和一次能采样的深度。<img src="https://img-blog.csdnimg.cn/20200311163106741.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">
+可以看到我们只需启用SS0再配置好各个通道即可，步骤如下：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="n">SysCtlPeripheralEnable</span><span class="p">(</span><span class="n">SYSCTL_PERIPH_ADC0</span><span class="p">);</span>  <span class="c1">//任何的操作都从使能模块开始
+</span><span class="c1"></span>
+<span class="n">SysCtlPeripheralEnable</span><span class="p">(</span><span class="n">SYSCTL_PERIPH_GPIOX</span><span class="p">);</span>  <span class="c1">//使能你需要的GPIO引脚所在的组，如需要使用PE0，PD0，则需要使能SYSCTL_PERIPH_GPIOE、SYSCTL_PERIPH_GPIOD
+</span><span class="c1"></span>
+<span class="n">GPIOPinTypeADC</span><span class="p">(</span><span class="n">GPIO_PORTX_BASE</span><span class="p">,</span> <span class="n">GPIO_PIN_0</span><span class="p">);</span>  <span class="c1">//将你需要的GPIO设置成ADC模式
+</span><span class="c1"></span>
+<span class="n">ADCSequenceConfigure</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ADC_TRIGGER_PROCESSOR</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>  <span class="c1">//配置采样序列的触发源和优先级，这个与下面的配置采样序列的节拍我会在下面详细介绍
+</span><span class="c1"></span><span class="n">ADCSequenceStepConfigure</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ADC_CTL_CH3</span> <span class="p">);</span>
+<span class="n">ADCSequenceStepConfigure</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ADC_CTL_CH3</span> <span class="p">);</span>
+<span class="n">ADCSequenceStepConfigure</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ADC_CTL_CH3</span> <span class="p">);</span>
+<span class="n">ADCSequenceStepConfigure</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ADC_CTL_CH3</span> <span class="p">);</span>
+<span class="n">ADCSequenceStepConfigure</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">ADC_CTL_CH3</span> <span class="p">);</span>
+<span class="n">ADCSequenceStepConfigure</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">ADC_CTL_CH3</span> <span class="p">);</span>
+<span class="n">ADCSequenceStepConfigure</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">ADC_CTL_CH3</span> <span class="p">);</span>
+<span class="n">ADCSequenceStepConfigure</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="n">ADC_CTL_CH3</span> <span class="o">|</span> <span class="n">ADC_CTL_IE</span> <span class="o">|</span> 
+<span class="n">ADC_CTL_END</span><span class="p">);</span>
+
+<span class="n">ADCIntEnable</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>   <span class="c1">//使能ADC0中断能力
+</span><span class="c1"></span>
+<span class="n">IntEnable</span><span class="p">(</span><span class="n">INT_ADC0SS0</span><span class="p">);</span>  <span class="c1">//使能ADC0SS0中断能力
+</span><span class="c1"></span>
+<span class="n">ADCSequenceEnable</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>     <span class="c1">//使能ADC0的SS0序列
+</span><span class="c1"></span>
+<span class="n">ADCIntClear</span><span class="p">(</span><span class="n">ADC0_BASE</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">//清除ADC中断标志
+</span></code></pre></div><p><strong>详解函数</strong>
+<code>void ADCSequenceConfigure(uint32_t ui32Base,uint32_t ui32SequenceNum,uint32_t ui32Trigger, uint32_t ui32Priority)；</code>
+此函数用于配置ADC采样序列的触发源和优先级，参数<code>ui32Base</code>指的是模块基地址，如ADC0_BASE、ADC1_BASE，参数<code>ui32SequenceNum</code>指的是序列号参数，如上述为0-3，参数<code>ui32Trigger</code>指的是触发类型，参数<code>ui32Priority</code>指的是采样序列优先级取值在 0 到 3 之间，0 代表最高优先级，3 代表最低优先级。</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="c1">//参数 ui32Trigger 取以下值之一：
+</span><span class="c1"></span><span class="n">ADC_TRIGGER_PROCESSOR</span>  <span class="c1">// 由处理器通过 ADCProcessorTrigger() 函数产生触发。
+</span><span class="c1"></span>
+<span class="n">ADC_TRIGGER_COMP0</span><span class="c1">//由第一个模拟比较器通过配置 ComparatorConfigure()函数，产生触发。
+</span><span class="c1"></span>
+<span class="n">ADC_TRIGGER_COMP1</span><span class="c1">//由第二个模拟比较器通过配置 ComparatorConfigure()函数，产生触发。
+</span><span class="c1"></span>
+<span class="n">ADC_TRIGGER_COMP2</span><span class="c1">//由第三个模拟比较器通过配置 ComparatorConfigure()函数，产生
+</span><span class="c1"></span><span class="err">触发。</span>
+<span class="n">ADC_TRIGGER_EXTERNAL</span><span class="c1">//可以通过GPIOADCTriggerEnable()函数从任一个 GPIO 中选择触发源。注意，一些微控制器只能通过 PB4 引脚输入产生触发。
+</span><span class="c1"></span><span class="n">ADC_TRIGGER_TIMER</span><span class="c1">//由定时器通过配置 TimerControlTrigger()函数产生触发。
+</span><span class="c1"></span><span class="n">ADC_TRIGGER_PWM0</span><span class="c1">//由第一个 PWM 产生器通过配置 PWMGenIntTrigEnable()函数产生触发。
+</span><span class="c1"></span><span class="n">ADC_TRIGGER_PWM1</span><span class="c1">//由第二个 PWM 产生器通过配置 PWMGenIntTrigEnable()函数产生触发。
+</span><span class="c1"></span><span class="n">ADC_TRIGGER_PWM2</span><span class="c1">//由第三个 PWM 产生器通过配置 PWMGenIntTrigEnable()函数产生触发。
+</span><span class="c1"></span><span class="n">ADC_TRIGGER_ALWAYS</span><span class="c1">//总是被触发，导致采样序列重复获取（只要没有更高优先级的触发源运行）。
+</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">void</span>
+<span class="n">GPIOADCTriggerEnable</span><span class="p">(</span><span class="n">uint32_t</span> <span class="n">ui32Port</span><span class="p">,</span><span class="n">uint8_t</span> <span class="n">ui8Pins</span><span class="p">)</span>  <span class="c1">//GPIO所在组以及引脚
+</span></code></pre></div><p><code>void ADCSequenceStepConfigure(uint32_t ui32Base,uint32_t ui32SequenceNum,uint32_t ui32Step,uint32_t ui32Config)；</code>
+此函数用于配置ADC采样序列的节拍，也就是采集通道的顺序，参数<code>ui32Base</code>指的是模块基地址，参数<code>ui32SequenceNum</code>指的是序列号参数，参数<code>ui32Step</code>指的是ADC采样的节拍，也就是采集顺序，根据使能的序列发生器不同，序列范围也不同，参照采样数，参数<code>ui32Config</code>指的是相应节拍的配置，逻辑上有ADC_CTL_TS（温度传感器）, ADC_CTL_IE（ADC中断）,ADC_CTL_END（队列结束）, ADC_CTL_D （差分），输入通道是ADC_CTL_CHx，具体数字见下图。<img src="https://img-blog.csdnimg.cn/20200311203617528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述">
+<code>int32_t ADCSequenceDataGet(uint32_t ui32Base,uint32_t ui32SequenceNum, uint32_t *pui32Buffer)；</code>使用此函数便可将采集得到的值传入pui32Buffer数组中。
+以上所述的都是理论，实际效果需要自己去验证，比如说同时采集笔者当时就没有成功，每次只能刷新几个通道的数据，而室友的就可以，（现在想来可能是节拍的配置有问题）。</p>
+<h3 id="42-硬件">4.2 硬件</h3>
+<p>硬件可以说是坑很多了，主要是问题一来就得重新焊</p>
+<ol>
+<li>测试硬件时需要在电源处控制最大电流避免烧毁（泪，流了下来）；</li>
+<li>仔细核对每一个引脚的工作是否正常，核对完后，所有功能合起来看是否正常，再将LaunchPad焊接到洞洞板上（PB6、PB7、PD1需要十分注意这个点）；</li>
+<li>仔细规划走线，尽量少飞线，如果能有硬件大佬就不用愁了；</li>
+<li>传感器模块焊接需要与洞洞板有一定的距离（排插的长度），防止高压击穿，并且裸露出来的金属点事先拿热熔胶封装好；</li>
+<li>硬件出问题时，从原理图触发，从源头触发，使用示波器、万用表等仪器作为辅助，检测实际与理论出现差错的地方。</li>
+</ol>
+<h3 id="43-联调">4.3 联调</h3>
+<ol>
+<li>如果每一项功能都是OK的，并且时序也设计的没问题，那么联调时只需要进行拟合，不过每次拟合都会不同，在数值较小时波动极大，可进行分段；</li>
+<li>如果计算出来数字与理论差距较大，观察你的FFT，考虑是否是算法有问题（拿数据自测一下），否则就是ADC采样有问题；</li>
+<li>在测量日光灯电流谐波时，先不要给LaunchPad供电，也不要打开电流表，因为日光灯点亮瞬间电流很大，会对仪器造成冲击，损伤仪器。</li>
+<li>不要把自己封闭在要求之下，先将框架搭好，慢慢寻找精度等要求偏差的原因（大部分都是因为这个ADC）。</li>
+</ol>
+<h1 id="总结">总结</h1>
+<p>做一个这样的项目从来都不是考验你之前知道多少，而是考验你解决问题的能力、学习的能力，所有的技术手册都发放给你，需要好好阅读（有一说一，英文确实看的头痛），针对出现的问题，需要知道该去哪找，该找什么而不是一味地只提出问题。遇到一种方法解决不了的问题，就换一种，虽然可能效果不好（就如前面所说的外部不能同时触发ADC问题，当时没有解决，但也采用了ADCProcessorTrigger() 函数连续触发解决），会用、活用才是写代码的乐趣所在。</p>
+    </article>
+
+    
+    <div class="prevnext">
+        
+
+
+
+<ul class="prevnext">
+    
+    <li>上一篇：
+        <a href="https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+            项目经历（2）— 基于Unity的塔防游戏开发
+        </a>
+    </li>
+    
+    
+    <li>下一篇：
+        <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%9F%BA%E7%A1%80%E9%A2%84%E7%A7%91%E4%B8%80-%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%AD%A6linux/">
+            学习笔记 — 嵌入式基础预科（一） — 零基础学linux
+        </a>
+    </li>
+    
+</ul>
+
+    </div>
+    
+    <div class="post-comments">
+        
+  
+  
+
+  
+
+    </div>
+</div>
+            </div>
+            
+            <div class="col-second">
+                <div class="col-box col-box-author">
+    <img class="avatar" src="https://img-blog.csdnimg.cn/2020031219172997.jpg" alt="姚路">
+    <div class="col-box-title name">姚路</div>
+    <p>天行健，君子以自强不息。</p>
+    <p class="contact">
+        <a href="mailto:724364708@qq.com">Email</a>
+    </p>
+</div>
+
+<div class="col-box">
+    <div class="col-box-title">Newest Posts</div>
+    <ul class="post-list">
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-shell%E8%84%9A%E6%9C%AC/" class="post-link">学习笔记 — Shell脚本</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%9F%BA%E7%A1%80%E9%A2%84%E7%A7%91%E4%B8%80-%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%AD%A6linux/" class="post-link">学习笔记 — 嵌入式基础预科（一） — 零基础学linux</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/3%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%89-%E5%9F%BA%E4%BA%8Etm4c-launchpad%E7%9A%84%E7%94%B5%E8%83%BD%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E4%BB%AA/" class="post-link">项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" class="post-link">项目经历（2）— 基于Unity的塔防游戏开发</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/" class="post-link">项目经历（1）— 基于Arduino的红外遥控器</a>
+        </li>
+        
+    </ul>
+</div>
+
+<div class="col-box post-toc hide">
+    <div class="col-box-title">TOC</div>
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="wrapper">
+    © 2020    <a href="https://hust-yl.github.io/">姚路</a>
+</div>
+    </footer>
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.11.0/dist/jquery.min.js"></script>
+
+<script src="/js/easybook.js"></script>
+
+<script src="/js/lazysizes.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/js/lightgallery-all.min.js"></script>
+<script src="/js/figure.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+
+</html>

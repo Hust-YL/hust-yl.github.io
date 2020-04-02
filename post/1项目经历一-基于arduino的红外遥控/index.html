@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<meta charset="utf-8">
+
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>项目经历（1）— 基于Arduino的红外遥控器 - 姚路的博客 | 伪程序员,嵌入式学习者</title>
+
+<meta name="description" content="简介：本项目基于Arduino UNO板和其他模块，用于实现遥控功能；文中重点介绍了实现思路，模块工作方式外加部分代码的讲解。
+" /><meta name="keywords"
+  content="姚路, 2233, 嵌入式, 软硬结合" />
+
+
+<link rel="stylesheet" href="https://hust-yl.github.io/css/main.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/src/css/lightgallery.css">
+
+
+
+<meta property="og:title" content="项目经历（1）— 基于Arduino的红外遥控器" />
+<meta property="og:description" content="简介：本项目基于Arduino UNO板和其他模块，用于实现遥控功能；文中重点介绍了实现思路，模块工作方式外加部分代码的讲解。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/" />
+<meta property="article:published_time" content="2018-10-05T12:25:50+08:00" />
+<meta property="article:modified_time" content="2018-10-05T12:25:50+08:00" />
+<meta itemprop="name" content="项目经历（1）— 基于Arduino的红外遥控器">
+<meta itemprop="description" content="简介：本项目基于Arduino UNO板和其他模块，用于实现遥控功能；文中重点介绍了实现思路，模块工作方式外加部分代码的讲解。">
+<meta itemprop="datePublished" content="2018-10-05T12:25:50&#43;08:00" />
+<meta itemprop="dateModified" content="2018-10-05T12:25:50&#43;08:00" />
+<meta itemprop="wordCount" content="477">
+
+
+
+<meta itemprop="keywords" content="Arduino,C,tag-1," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="项目经历（1）— 基于Arduino的红外遥控器"/>
+<meta name="twitter:description" content="简介：本项目基于Arduino UNO板和其他模块，用于实现遥控功能；文中重点介绍了实现思路，模块工作方式外加部分代码的讲解。"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body>
+    <div class="header-placeholder"></div>
+    
+    <header class="header">
+        <div class="wrapper">
+    <div id="sidebar-toggle">TOC</div>
+    
+    <a class="site-title" href="https://hust-yl.github.io/">姚路</a>
+    
+    <nav class="site-nav">
+        <a class="page-link" href="/">Home</a><a class="page-link" href="/post/">Category</a><a class="page-link" href="http://github.com/Hust-YL">MyGit</a><a class="page-link" href="https://blog.csdn.net/baidu_40605776">CSDN</a>
+    </nav>
+</div>
+
+    </header>
+
+    
+    <div class="page-content">
+        <div class="wrapper">
+            
+            <div class="col-main">
+                <div class="post">
+    
+    <header class="post-header">
+        <h1 class="post-title">项目经历（1）— 基于Arduino的红外遥控器</h1>
+        <p class="post-meta">Oct 05, 2018</p>
+    </header>
+    <article class="post-content">
+        
+        
+        
+        
+        
+        
+        <p>简介：本项目基于Arduino UNO板和其他模块，用于实现遥控功能；文中重点介绍了实现思路，模块工作方式外加部分代码的讲解。</p>
+<p>这是笔者大学时着手的第一个项目，从选题和解决方案上都比较菜，仅仅为记录而用。（PS：空调红外信号较为复杂，此次算是一个失败的案例，也希望有大佬在评论中指点一二）
+​      话不多说，进入正题：</p>
+<h2 id="1-系统方案">1. 系统方案</h2>
+<h3 id="11-目标">1.1 目标</h3>
+<p>​       通过 Arduino UNO 板与其他模块的配合，实现对家用红外控制电器的控制；
+​       功能分为两大部分，一是实现对外部温度的实时监控并根据此来选择打开空调或者关闭空调，二是对预先写入程序的遥控代码以及语音进行匹配，从而进行语音控制。</p>
+<h3 id="12-思路">1.2 思路</h3>
+<p>​       Arduino UNO 板连接红外接收模块，红外发射模块，语音控制模块，温湿度检测模块分别达到接收并解析红外信号，模拟红外 信号的发射，识别语音，实时检测环境温度的功能。根据外界条件进行判断，达到控制目的。<img src="https://img-blog.csdnimg.cn/20200307211107457.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="2-具体实现">2. 具体实现</h2>
+<h3 id="21-模块简介">2.1 模块简介</h3>
+<p><strong>Arduino模块大多需要库文件的驱动，之前大部分库文件均靠github寻找，而新版本Arduino IDE中库文件管理可以极大方便这种操作，<a href="http://www.arduino.cn/thread-5838-1-1.html">最新版IDE下载地址</a>，<a href="https://www.arduino.cn/thread-17883-1-1.html">库管理操作教程</a>。</strong></p>
+<h4 id="211-红外发射模块与红外接收模块">2.1.1 红外发射模块与红外接收模块</h4>
+<p><strong>红外信号的解码和模仿</strong>  <br>
+​      红外遥控器发出的信号是一连串的二进制脉冲码，而红外接收模块可以根据你选定的协议方式将接收到的信号转换为二进制内容显示在串口，而红外发射模块可以根据给定数组进行二进制信号的输出。</p>
+<p><strong>硬件图与连接方式</strong>
+红外接收模块：<code>VCC--------5V        GND--------GND      DAT--------PIN11</code>
+红外接收模块：<code>VCC--------5V        GND--------GND      DAT--------PIN8</code>   <img src="https://img-blog.csdnimg.cn/20200307173618528.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="红外发射和接收模块"></p>
+<p><strong>代码部分</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="c1">//此段为破译并将二进制信号赋值入数组single1中
+</span><span class="c1"></span><span class="kt">void</span> <span class="nf">dump1</span><span class="p">(</span><span class="n">decode_results</span> <span class="o">*</span><span class="n">results</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">count</span> <span class="o">=</span> <span class="n">results</span><span class="o">-&gt;</span><span class="n">rawlen</span><span class="p">;</span> 
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span> 
+		<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span> 
+			<span class="n">single1</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="p">(</span><span class="n">results</span><span class="o">-&gt;</span><span class="n">rawbuf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">USECPERTICK</span><span class="p">);</span> 
+		<span class="p">}</span>
+		<span class="k">else</span> <span class="p">{</span>
+			<span class="n">single1</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="p">((</span><span class="kt">unsigned</span> <span class="kt">long</span><span class="p">)</span> <span class="n">results</span><span class="o">-&gt;</span><span class="n">rawbuf</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">USECPERTICK</span><span class="p">);</span> 
+		<span class="p">}</span>
+		<span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&#34; &#34;</span><span class="p">);</span> 
+	<span class="p">}</span>
+	<span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">();</span> 
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">j</span><span class="o">&lt;</span><span class="n">count</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span><span class="n">j</span><span class="o">++</span><span class="p">){</span> 
+		<span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">single1</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span> 
+		<span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&#34;, &#34;</span><span class="p">);</span> 
+	<span class="p">}</span> 
+<span class="p">}</span>
+<span class="c1">//此句为以38KHz发送single1
+</span><span class="c1"></span>	<span class="n">irsend</span><span class="p">.</span><span class="n">sendRaw</span><span class="p">(</span><span class="n">single1</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">single1</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">single1</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="mi">38</span><span class="p">);</span>
+</code></pre></div><p><strong>红外遥控要用的话需要安装其库文件IRremote.h，<a href="https://github.com/shirriff/Arduino-IRremote">下载地址</a></strong></p>
+<h4 id="212-温湿度检测模块">2.1.2 温湿度检测模块</h4>
+<p><strong>温湿度检测</strong></p>
+<p>​      DHT11温湿度传感器，内部有一个电阻式感湿元件和有关NTC测温元件，元件信号经过存储在OPT内存中的校准系数处理后，以单一总线通信的形式发送给单片机IO口，数据帧格式为：8bit湿度整数值，8bit湿度小数值，8Bit温度整数值，8bit温度小数值，8bit校验和。
+​      一段完整的通信过程如下：
+​     ①单片机将驱动总线的IO配置为输出模式。准备向DHT11发送数据。
+​     ②单片机将总线拉低至少18ms，以此来发送起始信号。再将总线拉高并延时20~40us，以此来代表起始信号结 束。
+​     ③单片机将驱动总线的IO配置为输入模式，准备接收DHT11回传的数据。
+​     ④当DHT11检测倒单片机发送的起始信号后，就开始应答，回传采集到的传感器数据。</p>
+<p><strong>硬件图与连接方式</strong></p>
+<p>DHT11：<code>VCC--------5V                    GND--------GND  </code>
+<code> DATA--------PIN8 NC---------not connect</code></p>
+<p><img src="https://img-blog.csdnimg.cn/20200307173816732.png" alt="DHT11">
+<strong>代码部分</strong></p>
+<p><strong>调用DHT11库中的DHT11.temperature即可，此处附上<a href="https://github.com/adafruit/DHT-sensor-library">DHT11库文件下载地址</a>，或者自己写一个<a href="https://blog.csdn.net/yalecaltech/article/details/86544026">DHT11库</a></strong></p>
+<h4 id="212-语音识别模块">2.1.2 语音识别模块</h4>
+<p><strong>语音识别</strong></p>
+<p>​      LD3320是一颗基于非特定人语音识别计数的一款芯片，工作过程简单来说就是把用户说出的语音内容，通过频谱转换为语音特征和之前设定好的关键词进行对比，选出最优的匹配结果。
+<strong>硬件图与连接方式</strong>
+LD3320 ： <code>3.3V ----- VCC ​         GND ------ GND ​         MISO ----- PIN12 </code>
+​         <code>MOSI ----- PIN11 ​         SCK ----- PIN13 ​         NSS ----- PIN4 ​         RST ----- PIN9 ​        </code>
+​         <code>IRQ ----- PIN2 ​         WR ----- GND</code> <img src="https://img-blog.csdnimg.cn/20200307174002419.JPG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="LD3320">
+<strong>注意：LD3320必须由3.3V供电，否则会影响识别精度，如果Arduino板上无3.3V引脚，建议购买一块5V转3.3V的转换模块</strong></p>
+<p><strong>代码部分</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="n">Voice</span><span class="p">.</span><span class="n">init</span><span class="p">();</span> <span class="c1">//初始化 VoiceRecognition 模块 
+</span><span class="c1"></span><span class="n">Voice</span><span class="p">.</span><span class="n">addCommand</span><span class="p">(</span><span class="s">&#34;gao&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span> <span class="c1">//添加指令，参数（指令内容，指令标签（可重复））
+</span><span class="c1"></span>                           <span class="c1">//指令内容为识别内容，指令标签为返回值
+</span></code></pre></div><p><strong>需要调用LD3320库，此处附上<a href="https://pan.baidu.com/s/1kS-c2Ldys7PkVrw0RAv7mg">LD3320资料的百度网盘地址</a>，密码: v55g</strong></p>
+<h3 id="22-程序流程">2.2 程序流程</h3>
+<p><strong>因为当时指令设置较多，所以需要用的信号也随之增多，导致一块Arduino板内存不足，无法同时实现两个功能，故选择了拆开进行</strong></p>
+<h4 id="221-学习功能及自动控制">2.2.1 学习功能及自动控制</h4>
+<p><strong>程序流程</strong>
+<img src="https://img-blog.csdnimg.cn/20200307174114243.png" alt="学习功能">
+<img src="https://img-blog.csdnimg.cn/20200307174137678.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="自动控制">
+<strong>代码部分</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;IRremote.h&gt; </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;LiquidCrystal.h&gt; </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;dht11.h&gt; </span><span class="cp">
+</span><span class="cp">#define DHT11PIN 8 dht11 DHT11; 
+</span><span class="cp"></span><span class="kt">int</span> <span class="n">RECV_PIN</span> <span class="o">=</span> <span class="mi">11</span><span class="p">,</span><span class="n">LED</span><span class="o">=</span><span class="mi">7</span><span class="p">;</span> 
+<span class="kt">int</span> <span class="n">sg1</span><span class="p">,</span><span class="n">sg2</span><span class="p">,</span><span class="n">sg3</span><span class="p">;</span> 
+<span class="n">IRsend</span> <span class="n">irsend</span><span class="p">;</span> 
+<span class="kt">int</span> <span class="n">count</span><span class="p">;</span> 
+<span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">signle1</span><span class="p">[</span><span class="mi">100</span><span class="p">],</span><span class="n">signle2</span><span class="p">[</span><span class="mi">100</span><span class="p">],</span><span class="n">signle3</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span> 
+<span class="n">IRrecv</span> <span class="nf">irrecv</span><span class="p">(</span><span class="n">RECV_PIN</span><span class="p">);</span> 
+<span class="n">decode_results</span> <span class="n">results</span><span class="p">;</span>
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span> 
+	<span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span> 
+	<span class="n">pinMode</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span> 
+	<span class="n">pinMode</span><span class="p">(</span><span class="n">DHT11PIN</span><span class="p">,</span><span class="n">OUTPUT</span><span class="p">);</span> 
+	<span class="n">irrecv</span><span class="p">.</span><span class="n">enableIRIn</span><span class="p">();</span> <span class="c1">// Start the receiver 
+</span><span class="c1"></span><span class="p">}</span>
+<span class="c1">//此处省略上述过的将信号赋值部分
+</span><span class="c1"></span><span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span> 
+	<span class="kt">int</span> <span class="n">TEM</span><span class="p">;</span> 
+	<span class="kt">int</span> <span class="n">chk</span> <span class="o">=</span> <span class="n">DHT11</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="n">DHT11PIN</span><span class="p">);</span> 
+	<span class="n">TEM</span><span class="o">=</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">DHT11</span><span class="p">.</span><span class="n">temperature</span><span class="p">;</span> 
+	<span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span> 
+	<span class="n">delay</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span> 
+	<span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span> 
+	<span class="n">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span> 
+	<span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span> 
+	<span class="n">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span> 
+	<span class="k">if</span> <span class="p">(</span><span class="n">irrecv</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="o">&amp;</span><span class="n">results</span><span class="p">))</span> <span class="p">{</span> 
+	<span class="n">sg1</span><span class="o">=</span><span class="n">results</span><span class="p">.</span><span class="n">value</span><span class="p">;</span> 
+	<span class="n">dump1</span><span class="p">(</span><span class="o">&amp;</span><span class="n">results</span><span class="p">);</span> 
+	<span class="n">irrecv</span><span class="p">.</span><span class="n">resume</span><span class="p">();</span> 
+	<span class="n">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span> 
+	<span class="c1">//当时采用了多重循环将信号分别赋值入singl1,singl2,singl3,过于冗杂不再列出
+</span><span class="c1"></span>	<span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span> 
+	<span class="k">if</span><span class="p">(</span><span class="n">TEM</span><span class="o">&gt;</span><span class="mi">20</span><span class="o">&amp;&amp;</span><span class="n">TEM</span><span class="o">&lt;</span><span class="mi">28</span><span class="p">){</span> 
+		<span class="n">irsend</span><span class="p">.</span><span class="n">sendRaw</span><span class="p">(</span><span class="n">single1</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">single1</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">single1</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="mi">38</span><span class="p">);</span> 
+		<span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span> 
+	<span class="p">}</span>
+	<span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">TEM</span><span class="o">&gt;=</span><span class="mi">28</span><span class="p">){</span> 
+		<span class="n">irsend</span><span class="p">.</span><span class="n">sendRaw</span><span class="p">(</span><span class="n">single2</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">single2</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">single2</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="mi">38</span><span class="p">);</span> 
+	<span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span> 
+	<span class="p">}</span>
+	<span class="k">else</span><span class="p">{</span> 
+		<span class="n">irsend</span><span class="p">.</span><span class="n">sendRaw</span><span class="p">(</span><span class="n">single3</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">single3</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">single3</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="mi">38</span><span class="p">);</span> 
+		<span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+	<span class="p">}</span> 
+<span class="p">}</span>
+</code></pre></div><h4 id="222-语音控制">2.2.2 语音控制</h4>
+<p><strong>程序流程</strong>
+<img src="https://img-blog.csdnimg.cn/20200307174221208.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="语音声明">
+<img src="https://img-blog.csdnimg.cn/20200307174244223.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2JhaWR1XzQwNjA1Nzc2,size_16,color_FFFFFF,t_70" alt="语音循环">
+<strong>代码部分</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;ld3320.h&gt; </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;IRremote.h&gt; </span><span class="cp">
+</span><span class="cp"></span><span class="n">VoiceRecognition</span> <span class="n">Voice</span><span class="p">;</span> <span class="c1">//声明一个语音识别对象 
+</span><span class="c1"></span><span class="n">IRsend</span> <span class="n">irsend</span><span class="p">;</span> 
+<span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">signle1</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">9000</span><span class="p">,</span> <span class="mi">4350</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">600</span><span class="p">},</span> <span class="n">signle2</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">9000</span><span class="p">,</span> <span class="mi">4300</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1550</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">650</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">700</span><span class="p">},</span><span class="n">signle3</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="o">=</span><span class="p">{}........;</span> <span class="c1">//  此处省略其他的信号声明
+</span><span class="c1"></span><span class="cp">#define Led 7 </span><span class="c1">//定义 LED 控制引脚 
+</span><span class="c1"></span><span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">pinMode</span><span class="p">(</span><span class="n">Led</span><span class="p">,</span><span class="n">OUTPUT</span><span class="p">);</span> <span class="c1">//初始化 LED 引脚为输出模式 
+</span><span class="c1"></span>	<span class="n">digitalWrite</span><span class="p">(</span><span class="n">Led</span><span class="p">,</span><span class="n">LOW</span><span class="p">);</span> <span class="c1">//LED 引脚低电平 
+</span><span class="c1"></span>	<span class="n">Voice</span><span class="p">.</span><span class="n">init</span><span class="p">();</span> <span class="c1">//初始化 VoiceRecognition 模块 
+</span><span class="c1"></span>	<span class="n">Voice</span><span class="p">.</span><span class="n">addCommand</span><span class="p">(</span><span class="s">&#34;gao&#34;</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span> <span class="c1">//添加指令，参数（指令内容，指 令标签（可重复）） 
+</span><span class="c1"></span>	<span class="n">Voice</span><span class="p">.</span><span class="n">addCommand</span><span class="p">(</span><span class="s">&#34;di&#34;</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="c1">//省略其他语音的声明
+</span><span class="c1"></span>	<span class="n">Voice</span><span class="p">.</span><span class="n">start</span><span class="p">();</span> <span class="c1">//开始识别 
+</span><span class="c1"></span><span class="p">}</span>
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span> 
+	<span class="k">switch</span><span class="p">(</span><span class="n">Voice</span><span class="p">.</span><span class="n">read</span><span class="p">())</span> <span class="p">{</span> <span class="c1">//判断识别
+</span><span class="c1"></span>		<span class="k">case</span> <span class="mi">0</span><span class="o">:</span> <span class="n">irsend</span><span class="p">.</span><span class="n">sendRaw</span><span class="p">(</span><span class="n">xinhao1</span><span class="p">,</span><span class="k">sizeof</span><span class="p">(</span><span class="n">xinhao1</span><span class="p">)</span> <span class="o">/</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">xinhao1</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="mi">38</span><span class="p">);</span> 
+			<span class="n">digitalWrite</span><span class="p">(</span><span class="n">Led</span><span class="p">,</span><span class="n">HIGH</span><span class="p">);</span> 
+			<span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span> 
+			<span class="k">break</span><span class="p">;</span> <span class="c1">//省略其他信号的判断
+</span><span class="c1"></span>	<span class="p">}</span>
+	<span class="n">digitalWrite</span><span class="p">(</span><span class="n">Led</span><span class="p">,</span><span class="n">LOW</span><span class="p">);</span> 
+<span class="p">}</span>
+</code></pre></div><h2 id="3测试结果">3.测试结果</h2>
+<p>​     笔者当时家中没有空调，思考电视与空调都采用了红外信号控制，并且都满足 NEC 协议（红外通信协议）， 所以采用了电视控制作为代替，而回到学校才发现空调红外信号的复杂（泪目www）
+​     自控功能：检测到外部温度，每隔 10 秒发射一次开启信号，在电视中表现为音量提高
+​     声控功能：在各个模式中表现正常，温度上调信号的发射，表现在电视中为选择框向上移动</p>
+<h2 id="4总结">4.总结</h2>
+<p>​     在控制电视方面表现良好，方案是可行的，但是对于空调的复杂红外信号破解仍需要思考。不过总的来说，作为第一个独立完成的项目，还算满意。</p>
+    </article>
+
+    
+    <div class="prevnext">
+        
+
+
+
+<ul class="prevnext">
+    
+    
+    <li>下一篇：
+        <a href="https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/">
+            项目经历（2）— 基于Unity的塔防游戏开发
+        </a>
+    </li>
+    
+</ul>
+
+    </div>
+    
+    <div class="post-comments">
+        
+  
+  
+
+  
+
+    </div>
+</div>
+            </div>
+            
+            <div class="col-second">
+                <div class="col-box col-box-author">
+    <img class="avatar" src="https://img-blog.csdnimg.cn/2020031219172997.jpg" alt="姚路">
+    <div class="col-box-title name">姚路</div>
+    <p>天行健，君子以自强不息。</p>
+    <p class="contact">
+        <a href="mailto:724364708@qq.com">Email</a>
+    </p>
+</div>
+
+<div class="col-box">
+    <div class="col-box-title">Newest Posts</div>
+    <ul class="post-list">
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-shell%E8%84%9A%E6%9C%AC/" class="post-link">学习笔记 — Shell脚本</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%B5%8C%E5%85%A5%E5%BC%8F%E5%9F%BA%E7%A1%80%E9%A2%84%E7%A7%91%E4%B8%80-%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%AD%A6linux/" class="post-link">学习笔记 — 嵌入式基础预科（一） — 零基础学linux</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/3%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%89-%E5%9F%BA%E4%BA%8Etm4c-launchpad%E7%9A%84%E7%94%B5%E8%83%BD%E8%B4%A8%E9%87%8F%E5%88%86%E6%9E%90%E4%BB%AA/" class="post-link">项目经历（3）— 基于TM4C LaunchPad的电能质量分析仪</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/2%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%BA%8C-%E5%9F%BA%E4%BA%8Eunity%E7%9A%84%E5%A1%94%E9%98%B2%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91/" class="post-link">项目经历（2）— 基于Unity的塔防游戏开发</a>
+        </li>
+        
+        <li>
+            <a href="https://hust-yl.github.io/post/1%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86%E4%B8%80-%E5%9F%BA%E4%BA%8Earduino%E7%9A%84%E7%BA%A2%E5%A4%96%E9%81%A5%E6%8E%A7/" class="post-link">项目经历（1）— 基于Arduino的红外遥控器</a>
+        </li>
+        
+    </ul>
+</div>
+
+<div class="col-box post-toc hide">
+    <div class="col-box-title">TOC</div>
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="wrapper">
+    © 2020    <a href="https://hust-yl.github.io/">姚路</a>
+</div>
+    </footer>
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.11.0/dist/jquery.min.js"></script>
+
+<script src="/js/easybook.js"></script>
+
+<script src="/js/lazysizes.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.12/dist/js/lightgallery-all.min.js"></script>
+<script src="/js/figure.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-XXXXXXXX-X', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+</body>
+
+</html>
