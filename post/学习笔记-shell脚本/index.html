@@ -32,7 +32,7 @@
 <meta itemprop="description" content="早就听说过脚本，但没有具体的学习过，趁着此次备考实习，初步学习了一下（学习地址），（给的笔记）做一下总结：">
 <meta itemprop="datePublished" content="2020-01-20T19:10:50&#43;08:00" />
 <meta itemprop="dateModified" content="2020-01-20T19:10:50&#43;08:00" />
-<meta itemprop="wordCount" content="1005">
+<meta itemprop="wordCount" content="1001">
 
 
 
@@ -134,8 +134,8 @@
 <td></td>
 </tr>
 <tr>
-<td align="center"><code>+ </code> <code>-</code> <code>*</code> <code>\</code> <code>%</code> |      对应数学运算  加 减 乘 除 取余数</td>
-<td></td>
+<td align="center"><code>+ </code> <code>-</code> <code>*</code> <code>\ </code> <code>%</code></td>
+<td align="center">对应数学运算  加 减 乘 除 取余数</td>
 <td></td>
 </tr>
 <tr>
@@ -161,11 +161,11 @@
 <tr>
 <td align="center"><code>|</code></td>
 <td align="center">管道符</td>
-<td align="center">上一个命令的输出作为下一个命令的输入   cat filename</td>
+<td align="center">上一个命令的输出作为下一个命令的输入</td>
 </tr>
 <tr>
-<td align="center"><code>\</code>|               转义字符</td>
-<td></td>
+<td align="center"><code>\ </code></td>
+<td align="center">转义字符</td>
 <td></td>
 </tr>
 <tr>
@@ -790,22 +790,18 @@
 <td align="center">$</td>
 <td align="center">锚定结尾 a$ 以a结尾 默认锚定一个字符</td>
 </tr>
+</tbody>
+</table>
+<p><strong>匹配符</strong>                   <br>
+使用方式：匹配字符串</p>
+<table>
+<thead>
 <tr>
-<td align="center"><strong>匹配符</strong></td>
-<td></td>
+<th align="center">匹配符</th>
+<th align="center">说明</th>
 </tr>
-<tr>
-<td align="center">使用方式：匹配字符串</td>
-<td></td>
-</tr>
-<tr>
-<td align="center">匹配符</td>
-<td align="center">说明</td>
-</tr>
-<tr>
-<td align="center">:&mdash;&mdash;&ndash;:</td>
-<td align="center">:&mdash;&mdash;&mdash;&mdash;-:</td>
-</tr>
+</thead>
+<tbody>
 <tr>
 <td align="center">.</td>
 <td align="center">匹配除回车以外的任意字符</td>
@@ -830,33 +826,40 @@
 <td align="center">|</td>
 <td align="center">或</td>
 </tr>
+</tbody>
+</table>
+<p><strong>限定符</strong></p>
+<p>使用方式:对前面的字符或者字符串做限定说明</p>
+<table>
+<thead>
 <tr>
-<td align="center"><strong>限定符</strong></td>
-<td></td>
+<th align="center">限定符</th>
+<th align="center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">*</td>
+<td align="center">某个字符之后加星号表示该字符不出现或出现多次</td>
 </tr>
 <tr>
-<td align="center">使用方式:对前面的字符或者字符串做限定说明</td>
-<td></td>
+<td align="center">？</td>
+<td align="center">与星号相似，但略有变化，表示该字符出现一次或不出现</td>
 </tr>
 <tr>
-<td align="center">限定符</td>
-<td align="center">说明</td>
+<td align="center">+</td>
+<td align="center">与星号相似，表示其前面字符出现一次或多次，但必须出现一次</td>
 </tr>
 <tr>
-<td align="center">:&mdash;&mdash;&ndash;:</td>
-<td align="center">:&mdash;&mdash;&mdash;&mdash;-:</td>
+<td align="center">{n,m}</td>
+<td align="center">某个字符之后出现，表示该字符最少n次，最多m次</td>
+</tr>
+<tr>
+<td align="center">{m}</td>
+<td align="center">正好出现了m次</td>
 </tr>
 </tbody>
 </table>
-<ul>
-<li>|某个字符之后加星号表示该字符不出现或出现多次
-？|	与星号相似，但略有变化，表示该字符出现一次或不出现</li>
-</ul>
-<ul>
-<li>|与星号相似，表示其前面字符出现一次或多次，但必须出现一次
-{n,m}	|某个字符之后出现，表示该字符最少n次，最多m次
-{m}	|正好出现了m次</li>
-</ul>
 <h3 id="103-posix特殊字符">10.3 POSIX特殊字符</h3>
 <table>
 <thead>
@@ -914,12 +917,9 @@
 <td align="center">[:space:]</td>
 <td align="center">所有空白字符( 新行、空格、制表符)</td>
 </tr>
-<tr>
-<td align="center">**注意：**<code>[[ ]]</code>  第一个中括号是匹配符[] ，匹配中括号中的任意一个字符，第二个[]是格式 如[:digit:]</td>
-<td></td>
-</tr>
 </tbody>
 </table>
+<p><strong>注意：</strong> <code>[[ ]]</code>  第一个中括号是匹配符[] ，匹配中括号中的任意一个字符，第二个[]是格式 如[:digit:]</p>
 <h1 id="十一-对文件操作sed命令">十一、 对文件操作（sed命令）</h1>
 <h3 id="111-简介">11.1 简介</h3>
 <p>sed是linux中提供的一个外部命令,它是一个行(流)编辑器，非交互式的对文件内容进行增删改查的操作，使用者只能在命令行输入编辑命令、指定文件名，然后在屏幕上查看输出。</p>
@@ -1058,12 +1058,9 @@
 <td align="center">-v var=value</td>
 <td align="center">定义awk程序中使用的变量和默认值</td>
 </tr>
-<tr>
-<td align="center"><strong>注意：</strong> awk 程序脚本由左大括号和右大括号定义。脚本命令必须放置在两个大括号之间。由于awk命令行假定脚本是单文本字符串，所以必须将脚本包括在单引号内。</td>
-<td></td>
-</tr>
 </tbody>
 </table>
+<p><strong>注意：</strong> awk 程序脚本由左大括号和右大括号定义。脚本命令必须放置在两个大括号之间。由于awk命令行假定脚本是单文本字符串，所以必须将脚本包括在单引号内。</p>
 <p><strong>优先级:</strong>
 1)BEGIN: 在开始处理数据流之前执行，可选项
 2)program: 如何处理数据流，必选项
